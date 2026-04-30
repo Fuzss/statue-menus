@@ -1,4 +1,4 @@
-accessWidener   v2  named
+classTweaker    v2  official
 transitive-accessible   field   net/minecraft/world/SimpleContainer items   Lnet/minecraft/core/NonNullList;
 transitive-mutable  field   net/minecraft/world/SimpleContainer items   Lnet/minecraft/core/NonNullList;
 accessible  field   net/minecraft/world/entity/decoration/ArmorStand    disabledSlots   I
