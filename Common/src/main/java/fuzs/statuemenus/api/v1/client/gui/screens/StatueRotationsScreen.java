@@ -1,6 +1,5 @@
 package fuzs.statuemenus.api.v1.client.gui.screens;
 
-import fuzs.puzzleslib.api.client.gui.v2.components.SpritelessImageButton;
 import fuzs.statuemenus.api.v1.client.gui.components.BoxedSliderButton;
 import fuzs.statuemenus.api.v1.client.gui.components.FlatTickButton;
 import fuzs.statuemenus.api.v1.client.gui.components.LiveSliderButton;
@@ -11,10 +10,10 @@ import fuzs.statuemenus.api.v1.world.inventory.data.PosePartMutator;
 import fuzs.statuemenus.api.v1.world.inventory.data.StatuePose;
 import fuzs.statuemenus.api.v1.world.inventory.data.StatueScreenType;
 import fuzs.statuemenus.impl.client.gui.components.TooltipFactories;
-import net.minecraft.util.Util;
 import net.minecraft.client.gui.ComponentPath;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.navigation.FocusNavigationEvent;
@@ -23,6 +22,7 @@ import net.minecraft.core.Rotations;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Util;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import org.jspecify.annotations.Nullable;
@@ -47,7 +47,8 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
             .toLanguageKey("screen", "mirror");
 
     private static boolean clampRotations = true;
-    @Nullable private static StatuePose clipboard;
+    @Nullable
+    private static StatuePose clipboard;
     private final AbstractWidget[] lockButtons = new AbstractWidget[2];
     private StatuePose currentPose;
 
@@ -70,7 +71,7 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
     @Override
     protected void init() {
         super.init();
-        this.lockButtons[0] = Util.make(this.addRenderableWidget(new SpritelessImageButton(this.leftPos + 83,
+        this.lockButtons[0] = Util.make(this.addRenderableWidget(new ImageButton(this.leftPos + 83,
                 this.topPos + 10,
                 20,
                 20,
@@ -85,10 +86,10 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                     this.toggleLockButtons();
                     this.refreshLiveButtons();
                 },
-                CommonComponents.EMPTY)), (SpritelessImageButton widget) -> {
+                CommonComponents.EMPTY)), (ImageButton widget) -> {
             widget.setTooltip(Tooltip.create(Component.translatable(UNLIMITED_TRANSLATION_KEY)));
         });
-        this.lockButtons[1] = Util.make(this.addRenderableWidget(new SpritelessImageButton(this.leftPos + 83,
+        this.lockButtons[1] = Util.make(this.addRenderableWidget(new ImageButton(this.leftPos + 83,
                 this.topPos + 10,
                 20,
                 20,
@@ -103,12 +104,12 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                     this.toggleLockButtons();
                     this.refreshLiveButtons();
                 },
-                CommonComponents.EMPTY)), (SpritelessImageButton widget) -> {
+                CommonComponents.EMPTY)), (ImageButton widget) -> {
             widget.setTooltip(Tooltip.create(Component.translatable(LIMITED_TRANSLATION_KEY)));
         });
         Tooltip tooltip = this.getTipComponent();
         if (tooltip != null) {
-            this.addRenderableWidget(new SpritelessImageButton(this.leftPos + 107,
+            this.addRenderableWidget(new ImageButton(this.leftPos + 107,
                     this.topPos + 10,
                     20,
                     20,
@@ -120,7 +121,8 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                     256,
                     Function.identity()::apply) {
 
-                @Nullable @Override
+                @Nullable
+                @Override
                 public ComponentPath nextFocusPath(FocusNavigationEvent event) {
                     return null;
                 }
@@ -291,7 +293,8 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
         }
     }
 
-    @Nullable private Tooltip getTipComponent() {
+    @Nullable
+    private Tooltip getTipComponent() {
         List<Component> components = new ArrayList<>();
         for (int i = 1; Language.getInstance().has(TIP_TRANSLATION_KEY + i); i++) {
             components.add(Component.translatable(TIP_TRANSLATION_KEY + i));

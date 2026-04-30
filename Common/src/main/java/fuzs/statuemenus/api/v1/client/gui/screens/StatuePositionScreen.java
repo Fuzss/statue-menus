@@ -1,8 +1,7 @@
 package fuzs.statuemenus.api.v1.client.gui.screens;
 
-import fuzs.puzzleslib.api.client.gui.v2.components.SpritelessImageButton;
-import fuzs.puzzleslib.api.client.gui.v2.tooltip.TooltipBuilder;
-import fuzs.puzzleslib.api.util.v1.CommonHelper;
+import fuzs.puzzleslib.common.api.client.gui.v2.tooltip.TooltipBuilder;
+import fuzs.puzzleslib.common.api.util.v1.CommonHelper;
 import fuzs.statuemenus.api.v1.client.gui.components.FlatButton;
 import fuzs.statuemenus.api.v1.client.gui.components.FlatSliderButton;
 import fuzs.statuemenus.api.v1.client.gui.components.FlatTickButton;
@@ -11,17 +10,14 @@ import fuzs.statuemenus.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.api.v1.world.inventory.StatueHolder;
 import fuzs.statuemenus.api.v1.world.inventory.data.StatueScreenType;
 import fuzs.statuemenus.impl.world.inventory.StatuePoses;
-import net.minecraft.util.Util;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.minecraft.util.Util;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import org.jspecify.annotations.Nullable;
@@ -172,13 +168,12 @@ public class StatuePositionScreen extends StatueButtonsScreen {
 
         @Override
         protected void applyClientValue(double newValue) {
-            ScaleAttributeHelper.setScale(StatuePositionScreen.this.getHolder().getEntity(), toLogarithmicValue(newValue));
+            ScaleAttributeHelper.setScale(StatuePositionScreen.this.getHolder().getEntity(),
+                    toLogarithmicValue(newValue));
         }
 
         public static double fromLogarithmicValue(double value) {
-            value = Mth.inverseLerp(value,
-                    ScaleAttributeHelper.MIN_SCALE,
-                    ScaleAttributeHelper.MAX_SCALE);
+            value = Mth.inverseLerp(value, ScaleAttributeHelper.MIN_SCALE, ScaleAttributeHelper.MAX_SCALE);
             return (Math.log10(value + LOGARITHMIC_SCALE_POW) + LOGARITHMIC_SCALE) / LOGARITHMIC_SCALE;
         }
 
@@ -192,8 +187,10 @@ public class StatuePositionScreen extends StatueButtonsScreen {
         protected final DoubleSupplier valueGetter;
         protected final Consumer<Float> valueSetter;
         private final double snapInterval;
-        @Nullable protected FlatSliderButton sliderButton;
-        @Nullable protected Button resetButton;
+        @Nullable
+        protected FlatSliderButton sliderButton;
+        @Nullable
+        protected Button resetButton;
 
         public RotationWidget(Component title, DoubleSupplier valueGetter, Consumer<Float> valueSetter) {
             this(title, valueGetter, valueSetter, StatuePoses.DEGREES_SNAP_INTERVAL);
@@ -278,8 +275,8 @@ public class StatuePositionScreen extends StatueButtonsScreen {
                 private boolean dirty;
 
                 @Override
-                public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-                    super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
+                public void extractWidgetRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+                    super.extractWidgetRenderState(guiGraphics, mouseX, mouseY, partialTick);
                     double mouseValue = StatuePoses.snapValue((mouseX - this.getX()) / (double) this.getWidth(),
                             this.snapInterval);
                     this.setTooltip(Tooltip.create(RotationWidget.this.getTooltipComponent(mouseValue)));
@@ -431,7 +428,7 @@ public class StatuePositionScreen extends StatueButtonsScreen {
             this.editBox.setTextColorUneditable(0XFFE0E0E0);
             this.editBox.setValue(BLOCK_INCREMENT_FORMAT.format(this.getPositionValue()));
             this.addRenderableWidget(this.editBox);
-            AbstractWidget incrementButton = this.addRenderableWidget(new SpritelessImageButton(posX + 149,
+            AbstractWidget incrementButton = this.addRenderableWidget(new ImageButton(posX + 149,
                     posY + 1,
                     20,
                     10,
@@ -448,7 +445,7 @@ public class StatuePositionScreen extends StatueButtonsScreen {
                     .setLines(() -> Collections.singletonList(Component.translatable(INCREMENT_TRANSLATION_KEY,
                             getPixelIncrementComponent(currentIncrement))))
                     .build(incrementButton);
-            AbstractWidget decrementButton = this.addRenderableWidget(new SpritelessImageButton(posX + 149,
+            AbstractWidget decrementButton = this.addRenderableWidget(new ImageButton(posX + 149,
                     posY + 11,
                     20,
                     10,

@@ -1,8 +1,8 @@
 package fuzs.statuemenus.impl.client;
 
-import fuzs.puzzleslib.api.client.core.v1.ClientModConstructor;
-import fuzs.puzzleslib.api.client.core.v1.context.MenuScreensContext;
-import fuzs.puzzleslib.api.core.v1.ModLoaderEnvironment;
+import fuzs.puzzleslib.common.api.client.core.v1.ClientModConstructor;
+import fuzs.puzzleslib.common.api.client.core.v1.context.MenuScreensContext;
+import fuzs.puzzleslib.common.api.core.v1.ModLoaderEnvironment;
 import fuzs.statuemenus.api.v1.client.gui.screens.*;
 import fuzs.statuemenus.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.api.v1.world.inventory.StatueHolder;

@@ -1,11 +1,11 @@
 package fuzs.statuemenus.api.v1.client.gui.components;
 
-import fuzs.puzzleslib.api.util.v1.CommonHelper;
+import fuzs.puzzleslib.common.api.util.v1.CommonHelper;
 import fuzs.statuemenus.api.v1.client.gui.screens.AbstractStatueScreen;
 import fuzs.statuemenus.impl.world.inventory.StatuePoses;
 import net.minecraft.client.InputType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -67,7 +67,7 @@ public abstract class BoxedSliderButton extends AbstractWidget implements Unboun
     }
 
     @Override
-    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    public void extractWidgetRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         final int sliderX = (int) (this.horizontalValue * (double) (this.width - SLIDER_SIZE - 2));
         final int sliderY = (int) (this.verticalValue * (double) (this.height - SLIDER_SIZE - 2));
         if (!this.active || !this.isHoveredOrFocused()
@@ -204,8 +204,7 @@ public abstract class BoxedSliderButton extends AbstractWidget implements Unboun
         if (!this.horizontalValueLocked()) {
             this.horizontalValue = Mth.clamp(horizontalValue, 0.0, 1.0);
             if (snapValue) {
-                this.horizontalValue = StatuePoses.snapValue(this.horizontalValue,
-                        StatuePoses.DEGREES_SNAP_INTERVAL);
+                this.horizontalValue = StatuePoses.snapValue(this.horizontalValue, StatuePoses.DEGREES_SNAP_INTERVAL);
             }
         }
         if (oldHorizontalValue != this.horizontalValue) {
@@ -218,8 +217,7 @@ public abstract class BoxedSliderButton extends AbstractWidget implements Unboun
         if (!this.verticalValueLocked()) {
             this.verticalValue = Mth.clamp(verticalValue, 0.0, 1.0);
             if (snapValue) {
-                this.verticalValue = StatuePoses.snapValue(this.verticalValue,
-                        StatuePoses.DEGREES_SNAP_INTERVAL);
+                this.verticalValue = StatuePoses.snapValue(this.verticalValue, StatuePoses.DEGREES_SNAP_INTERVAL);
             }
         }
         if (oldVerticalValue != this.verticalValue) {

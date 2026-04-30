@@ -1,6 +1,6 @@
 package fuzs.statuemenus.impl.client.gui.components;
 
-import fuzs.puzzleslib.api.client.gui.v2.tooltip.TooltipBuilder;
+import fuzs.puzzleslib.common.api.client.gui.v2.tooltip.TooltipBuilder;
 import fuzs.statuemenus.api.v1.client.gui.screens.StatuePosesScreen;
 import fuzs.statuemenus.api.v1.world.inventory.data.StatuePose;
 import net.minecraft.client.gui.components.AbstractWidget;

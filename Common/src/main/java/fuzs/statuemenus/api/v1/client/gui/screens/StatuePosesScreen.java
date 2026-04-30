@@ -1,6 +1,5 @@
 package fuzs.statuemenus.api.v1.client.gui.screens;
 
-import fuzs.puzzleslib.api.client.gui.v2.components.SpritelessImageButton;
 import fuzs.statuemenus.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.api.v1.world.entity.decoration.StatueEntity;
 import fuzs.statuemenus.api.v1.world.inventory.StatueHolder;
@@ -8,9 +7,10 @@ import fuzs.statuemenus.api.v1.world.inventory.data.StatuePose;
 import fuzs.statuemenus.api.v1.world.inventory.data.StatueScreenType;
 import fuzs.statuemenus.impl.client.gui.components.TooltipFactories;
 import fuzs.statuemenus.impl.world.inventory.StatuePoses;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -30,7 +30,7 @@ public class StatuePosesScreen extends AbstractStatueScreen {
     @Override
     protected void init() {
         super.init();
-        this.cycleButtons[0] = this.addRenderableWidget(new SpritelessImageButton(this.leftPos + 17,
+        this.cycleButtons[0] = this.addRenderableWidget(new ImageButton(this.leftPos + 17,
                 this.topPos + 153,
                 20,
                 20,
@@ -40,7 +40,7 @@ public class StatuePosesScreen extends AbstractStatueScreen {
                 (Button button) -> {
                     this.toggleCycleButtons(-this.poseButtons.length);
                 }));
-        this.cycleButtons[1] = this.addRenderableWidget(new SpritelessImageButton(this.leftPos + 49,
+        this.cycleButtons[1] = this.addRenderableWidget(new ImageButton(this.leftPos + 49,
                 this.topPos + 153,
                 20,
                 20,
@@ -52,7 +52,7 @@ public class StatuePosesScreen extends AbstractStatueScreen {
                 }));
         for (int i = 0; i < this.poseButtons.length; i++) {
             final int index = i;
-            this.poseButtons[i] = this.addRenderableWidget(new SpritelessImageButton(this.leftPos + 83 + i % 2 * 62,
+            this.poseButtons[i] = this.addRenderableWidget(new ImageButton(this.leftPos + 83 + i % 2 * 62,
                     this.topPos + 9 + i / 2 * 88,
                     60,
                     82,
@@ -100,8 +100,8 @@ public class StatuePosesScreen extends AbstractStatueScreen {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+        super.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
         StatueEntity statueEntity = this.holder.getStatueEntity();
         StatuePose originalPose = StatuePose.fromEntity(statueEntity);
         for (int i = 0; i < this.poseButtons.length; i++) {

@@ -1,8 +1,7 @@
 package fuzs.statuemenus.api.v1.client.gui.screens;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import fuzs.puzzleslib.api.client.gui.v2.components.SpritelessImageButton;
-import fuzs.puzzleslib.api.client.key.v1.KeyMappingHelper;
+import fuzs.puzzleslib.common.api.client.key.v1.KeyMappingHelper;
 import fuzs.statuemenus.api.v1.client.gui.components.UnboundedSliderButton;
 import fuzs.statuemenus.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.api.v1.world.entity.decoration.StatueEntity;
@@ -11,12 +10,8 @@ import fuzs.statuemenus.api.v1.world.inventory.StatueMenu;
 import fuzs.statuemenus.api.v1.world.inventory.data.StatuePose;
 import fuzs.statuemenus.api.v1.world.inventory.data.StatueScreenType;
 import fuzs.statuemenus.impl.StatueMenus;
-import net.minecraft.util.Util;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractButton;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.client.gui.screens.Screen;
@@ -29,6 +24,7 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Util;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.jspecify.annotations.Nullable;
@@ -46,7 +42,8 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
     private static final Identifier ARMOR_STAND_EQUIPMENT_LOCATION = StatueMenus.id(
             "textures/gui/container/statue/equipment.png");
 
-    @Nullable static StatueScreenType lastScreenType;
+    @Nullable
+    static StatueScreenType lastScreenType;
     protected final int imageWidth = 210;
     protected final int imageHeight = 188;
     protected final StatueHolder holder;
@@ -59,7 +56,8 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
     protected boolean smallInventoryEntity;
     protected int mouseX;
     protected int mouseY;
-    @Nullable private AbstractWidget closeButton;
+    @Nullable
+    private AbstractWidget closeButton;
 
     public AbstractStatueScreen(StatueHolder holder, Inventory inventory, Component component, DataSyncHandler dataSyncHandler) {
         super(component);
@@ -130,7 +128,7 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
     }
 
     public static AbstractButton makeCloseButton(Screen screen, int leftPos, int imageWidth, int topPos) {
-        return new SpritelessImageButton(leftPos + imageWidth - 15 - 8,
+        return new ImageButton(leftPos + imageWidth - 15 - 8,
                 topPos + 8,
                 15,
                 15,
@@ -161,7 +159,7 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
     }
 
     protected void addVanillaTweaksCreditsButton() {
-        this.addRenderableWidget(new SpritelessImageButton(this.leftPos + 6,
+        this.addRenderableWidget(new ImageButton(this.leftPos + 6,
                 this.topPos + 6,
                 20,
                 20,
@@ -198,8 +196,8 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+        super.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
         if (!this.disableMenuRendering()) {
             if (this.renderInventoryEntity()) {
                 int posX = this.leftPos + this.inventoryEntityX + 1;
@@ -231,7 +229,7 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
     }
 
     @Override
-    public void renderArmorStandInInventory(GuiGraphics guiGraphics, int x1, int y1, int x2, int y2, int scale, float mouseX, float mouseY, float partialTick) {
+    public void renderArmorStandInInventory(GuiGraphicsExtractor guiGraphics, int x1, int y1, int x2, int y2, int scale, float mouseX, float mouseY, float partialTick) {
         StatueEntity statueEntity = this.holder.getStatueEntity();
         StatuePose pose = this.getPoseOverride();
         StatuePose originalPose;
@@ -252,9 +250,9 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
     }
 
     @Override
-    public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         if (!this.disableMenuRendering()) {
-            this.renderTransparentBackground(guiGraphics);
+            this.extractTransparentBackground(guiGraphics);
             guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
                     getArmorStandBackgroundLocation(),
                     this.leftPos,
@@ -387,7 +385,7 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
         return screenTypes.get(newIndex);
     }
 
-    public static <T extends Screen & StatueScreen> void drawTabs(GuiGraphics guiGraphics, int leftPos, int topPos, int imageHeight, T screen, List<StatueScreenType> tabs) {
+    public static <T extends Screen & StatueScreen> void drawTabs(GuiGraphicsExtractor guiGraphics, int leftPos, int topPos, int imageHeight, T screen, List<StatueScreenType> tabs) {
         int tabsStartY = getTabsStartY(imageHeight, tabs.size());
         for (int i = 0; i < tabs.size(); i++) {
             StatueScreenType tabType = tabs.get(i);
@@ -403,7 +401,7 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
                     26,
                     256,
                     256);
-            guiGraphics.renderFakeItem(tabType.item(), tabX + 10, tabY + 5);
+            guiGraphics.fakeItem(tabType.item(), tabX + 10, tabY + 5);
         }
     }
 

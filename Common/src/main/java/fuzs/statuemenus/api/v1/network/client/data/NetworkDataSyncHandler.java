@@ -1,6 +1,6 @@
 package fuzs.statuemenus.api.v1.network.client.data;
 
-import fuzs.puzzleslib.api.network.v4.MessageSender;
+import fuzs.puzzleslib.common.api.network.v4.MessageSender;
 import fuzs.statuemenus.api.v1.world.inventory.StatueHolder;
 import fuzs.statuemenus.api.v1.world.inventory.data.StatuePose;
 import fuzs.statuemenus.api.v1.world.inventory.data.StatueStyleOption;

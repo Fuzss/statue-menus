@@ -1,11 +1,11 @@
 package fuzs.statuemenus.impl;
 
-import fuzs.puzzleslib.api.core.v1.ModConstructor;
-import fuzs.puzzleslib.api.core.v1.ModLoaderEnvironment;
-import fuzs.puzzleslib.api.core.v1.context.PayloadTypesContext;
-import fuzs.puzzleslib.api.event.v1.core.EventResultHolder;
-import fuzs.puzzleslib.api.event.v1.entity.player.PlayerInteractEvents;
-import fuzs.puzzleslib.api.init.v3.registry.RegistryManager;
+import fuzs.puzzleslib.common.api.core.v1.ModConstructor;
+import fuzs.puzzleslib.common.api.core.v1.ModLoaderEnvironment;
+import fuzs.puzzleslib.common.api.core.v1.context.PayloadTypesContext;
+import fuzs.puzzleslib.common.api.event.v1.core.EventResultHolder;
+import fuzs.puzzleslib.common.api.event.v1.entity.player.PlayerInteractEvents;
+import fuzs.puzzleslib.common.api.init.v3.registry.RegistryManager;
 import fuzs.statuemenus.api.v1.helper.ArmorStandInteractHelper;
 import fuzs.statuemenus.api.v1.world.entity.decoration.ArmorStandStatue;
 import fuzs.statuemenus.api.v1.world.inventory.StatueMenu;
@@ -55,10 +55,10 @@ public class StatueMenus implements ModConstructor {
                             });
                 },
                 StatueMenu.Data.STREAM_CODEC);
-        PlayerInteractEvents.USE_ENTITY_AT.register(onUseEntityAt((Holder.Reference<MenuType<?>>) holder[0]));
+        PlayerInteractEvents.USE_ENTITY.register(onUseEntityAt((Holder.Reference<MenuType<?>>) holder[0]));
     }
 
-    private static PlayerInteractEvents.UseEntityAt onUseEntityAt(Holder<MenuType<?>> menuType) {
+    private static PlayerInteractEvents.UseEntity onUseEntityAt(Holder<MenuType<?>> menuType) {
         return (Player player, Level level, InteractionHand interactionHand, Entity entity, Vec3 hitVector) -> {
             if (entity.getType() == EntityType.ARMOR_STAND && entity instanceof ArmorStand armorStand) {
                 if (player.isShiftKeyDown() && player.getItemInHand(interactionHand).is(Items.DEBUG_STICK)) {

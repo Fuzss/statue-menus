@@ -2,7 +2,7 @@ package fuzs.statuemenus.api.v1.client.gui.screens;
 
 import fuzs.statuemenus.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.api.v1.world.inventory.StatueHolder;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
@@ -127,8 +127,8 @@ public abstract class StatueTickBoxScreen<T> extends AbstractStatueScreen {
     }
 
     @Override
-    public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
+    public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+        super.extractBackground(guiGraphics, mouseX, mouseY, partialTick);
         // name edit box background
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
                 getArmorStandWidgetsLocation(),
@@ -140,6 +140,6 @@ public abstract class StatueTickBoxScreen<T> extends AbstractStatueScreen {
                 12,
                 256,
                 256);
-        this.name.render(guiGraphics, mouseX, mouseY, partialTick);
+        this.name.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
     }
 }

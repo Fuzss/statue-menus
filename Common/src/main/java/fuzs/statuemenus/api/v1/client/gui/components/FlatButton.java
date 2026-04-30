@@ -3,7 +3,7 @@ package fuzs.statuemenus.api.v1.client.gui.components;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -37,8 +37,7 @@ public class FlatButton extends Button {
     }
 
     @Override
-    public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        Minecraft minecraft = Minecraft.getInstance();
+    public void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         int yImage = this.getYImage();
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
                 this.textureLocation,
@@ -62,9 +61,10 @@ public class FlatButton extends Button {
                 256,
                 256,
                 ARGB.white(this.alpha));
-        this.renderBg(guiGraphics, minecraft, mouseX, mouseY);
-        drawCenteredStringWithShadow(guiGraphics,
-                minecraft.font,
+        this.extractBackground(guiGraphics, mouseX, mouseY, partialTick);
+        Font font = Minecraft.getInstance().font;
+        centeredTextWithShadow(guiGraphics,
+                font,
                 this.getMessage(),
                 this.getX() + this.width / 2 + this.getMessageXOffset(),
                 this.getY() + (this.height - 8) / 2,
@@ -76,7 +76,7 @@ public class FlatButton extends Button {
         return !this.active || this.isHoveredOrFocused() ? 2 : 1;
     }
 
-    protected void renderBg(GuiGraphics guiGraphics, Minecraft minecraft, int mouseX, int mouseY) {
+    protected void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         // NO-OP
     }
 
@@ -85,9 +85,9 @@ public class FlatButton extends Button {
     }
 
     /**
-     * @see GuiGraphics#drawCenteredString(Font, Component, int, int, int)
+     * @see GuiGraphicsExtractor#centeredText(Font, String, int, int, int)
      */
-    public static void drawCenteredStringWithShadow(GuiGraphics guiGraphics, Font font, Component component, int x, int y, int color, boolean dropShadow) {
-        guiGraphics.drawString(font, component, x - font.width(component) / 2, y, color, dropShadow);
+    public static void centeredTextWithShadow(GuiGraphicsExtractor guiGraphics, Font font, Component component, int x, int y, int color, boolean dropShadow) {
+        guiGraphics.text(font, component, x - font.width(component) / 2, y, color, dropShadow);
     }
 }

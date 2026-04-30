@@ -1,7 +1,7 @@
 package fuzs.statuemenus.api.v1.world.inventory;
 
 import com.google.common.collect.ImmutableMap;
-import fuzs.puzzleslib.api.container.v1.QuickMoveRuleSet;
+import fuzs.puzzleslib.common.api.container.v1.QuickMoveRuleSet;
 import fuzs.statuemenus.api.v1.world.entity.decoration.StatueEntity;
 import fuzs.statuemenus.impl.StatueMenus;
 import fuzs.statuemenus.impl.world.inventory.ArmorStandSlot;

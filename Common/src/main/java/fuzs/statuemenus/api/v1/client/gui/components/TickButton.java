@@ -1,13 +1,14 @@
 package fuzs.statuemenus.api.v1.client.gui.components;
 
 import fuzs.statuemenus.api.v1.client.gui.screens.AbstractStatueScreen;
-import net.minecraft.util.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.ARGB;
+import net.minecraft.util.Util;
 
 public class TickButton extends FlatButton {
     private final Component title;
@@ -33,19 +34,20 @@ public class TickButton extends FlatButton {
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, Minecraft minecraft, int mouseX, int mouseY) {
-        super.renderBg(guiGraphics, minecraft, mouseX, mouseY);
+    protected void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+        super.extractBackground(guiGraphics, mouseX, mouseY, partialTick);
         if (this.wasClicked()) {
             this.setMessage(this.clickedTitle);
-            final int i = this.getYImage();
-            int titleWidth = minecraft.font.width(this.clickedTitle);
+            int yImage = this.getYImage();
+            Font font = Minecraft.getInstance().font;
+            int titleWidth = font.width(this.clickedTitle);
             final int startX = (this.width - titleWidth - (titleWidth > 0 ? 4 : 0) - 16) / 2;
             guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
                     this.textureLocation,
                     this.getX() + startX,
                     this.getY() + 2,
                     196,
-                    16 + i * 16,
+                    16 + yImage * 16,
                     16,
                     16,
                     256,

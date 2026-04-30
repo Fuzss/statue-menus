@@ -1,6 +1,6 @@
 package fuzs.statuemenus.api.v1.helper;
 
-import fuzs.puzzleslib.api.container.v1.ContainerMenuHelper;
+import fuzs.puzzleslib.common.api.container.v1.ContainerMenuHelper;
 import fuzs.statuemenus.api.v1.world.entity.decoration.StatueEntity;
 import fuzs.statuemenus.api.v1.world.inventory.StatueMenu;
 import net.minecraft.ChatFormatting;

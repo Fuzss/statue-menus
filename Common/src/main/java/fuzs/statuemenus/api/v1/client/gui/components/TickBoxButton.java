@@ -3,7 +3,8 @@ package fuzs.statuemenus.api.v1.client.gui.components;
 import fuzs.statuemenus.api.v1.client.gui.screens.AbstractStatueScreen;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -22,8 +23,7 @@ public class TickBoxButton extends Button {
     }
 
     @Override
-    public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        Minecraft minecraft = Minecraft.getInstance();
+    public void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
                 AbstractStatueScreen.getArmorStandWidgetsLocation(),
                 this.getX() + 2,
@@ -50,7 +50,8 @@ public class TickBoxButton extends Button {
         }
         final int textColor =
                 this.active ? (this.isHoveredOrFocused() ? ChatFormatting.YELLOW.getColor() : 16777215) : 10526880;
-        guiGraphics.drawString(minecraft.font,
+        Font font = Minecraft.getInstance().font;
+        guiGraphics.text(font,
                 this.getMessage(),
                 this.getX() + 20 + this.textMargin,
                 this.getY() + 2 + 4,

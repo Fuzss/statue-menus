@@ -1,10 +1,10 @@
 package fuzs.statuemenus.api.v1.client.gui.components;
 
-import fuzs.puzzleslib.api.client.gui.v2.GuiGraphicsHelper;
+import fuzs.puzzleslib.common.api.client.gui.v2.GuiGraphicsHelper;
 import fuzs.statuemenus.impl.world.inventory.StatuePoses;
 import net.minecraft.client.InputType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -45,8 +45,7 @@ public abstract class FlatSliderButton extends AbstractSliderButton implements U
     }
 
     @Override
-    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        Minecraft minecraft = Minecraft.getInstance();
+    public void extractWidgetRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         GuiGraphicsHelper.blitNineSliced(guiGraphics,
                 RenderPipelines.GUI_TEXTURED,
                 this.textureLocation,
@@ -83,8 +82,8 @@ public abstract class FlatSliderButton extends AbstractSliderButton implements U
                 256,
                 256,
                 ARGB.white(this.alpha));
-        this.renderScrollingStringOverContents(guiGraphics.textRendererForWidget(this,
-                GuiGraphics.HoveredTextEffects.NONE), this.getMessage(), 2);
+        this.extractScrollingStringOverContents(guiGraphics.textRendererForWidget(this,
+                GuiGraphicsExtractor.HoveredTextEffects.NONE), this.getMessage(), 2);
     }
 
     @Override

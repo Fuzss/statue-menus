@@ -4,7 +4,7 @@ import fuzs.statuemenus.api.v1.client.gui.screens.AbstractStatueScreen;
 import fuzs.statuemenus.impl.world.inventory.StatuePoses;
 import net.minecraft.client.InputType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -59,7 +59,7 @@ public abstract class VerticalSliderButton extends AbstractWidget implements Unb
     }
 
     @Override
-    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    public void extractWidgetRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
                 AbstractStatueScreen.getArmorStandWidgetsLocation(),
                 this.getX(),

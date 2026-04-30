@@ -6,7 +6,7 @@ import fuzs.statuemenus.api.v1.world.inventory.StatueHolder;
 import fuzs.statuemenus.api.v1.world.inventory.StatueMenu;
 import fuzs.statuemenus.api.v1.world.inventory.data.StatueScreenType;
 import fuzs.statuemenus.impl.world.inventory.ArmorStandSlot;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.MenuAccess;
@@ -29,11 +29,9 @@ public class StatueEquipmentScreen extends AbstractContainerScreen<StatueMenu> i
     private int mouseY;
 
     public StatueEquipmentScreen(StatueHolder holder, Inventory inventory, Component component, DataSyncHandler dataSyncHandler) {
-        super(holder.getMenu(), inventory, component);
+        super(holder.getMenu(), inventory, component, 210, 188);
         this.inventory = inventory;
         this.dataSyncHandler = dataSyncHandler;
-        this.imageWidth = 210;
-        this.imageHeight = 188;
     }
 
     @Override
@@ -116,9 +114,8 @@ public class StatueEquipmentScreen extends AbstractContainerScreen<StatueMenu> i
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
-        this.renderTooltip(guiGraphics, mouseX, mouseY);
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+        super.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
         if (this.menu.getCarried().isEmpty()) {
             AbstractStatueScreen.findHoveredTab(this.leftPos,
                     this.topPos,
@@ -132,12 +129,14 @@ public class StatueEquipmentScreen extends AbstractContainerScreen<StatueMenu> i
                         mouseY);
             });
         }
+
         this.mouseX = mouseX;
         this.mouseY = mouseY;
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
+    public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+        super.extractBackground(guiGraphics, mouseX, mouseY, partialTick);
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
                 AbstractStatueScreen.getArmorStandEquipmentLocation(),
                 this.leftPos,
@@ -197,7 +196,7 @@ public class StatueEquipmentScreen extends AbstractContainerScreen<StatueMenu> i
     }
 
     @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    protected void extractLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
         // NO-OP
     }
 

@@ -3,7 +3,7 @@ package fuzs.statuemenus.api.v1.world.entity.decoration;
 import com.google.common.util.concurrent.Runnables;
 import fuzs.statuemenus.api.v1.client.gui.screens.StatueScreen;
 import fuzs.statuemenus.api.v1.world.inventory.data.StatueScreenType;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.core.Rotations;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
@@ -66,7 +66,7 @@ public interface StatueEntity {
 
     /**
      * Prepares the entity for rendering via
-     * {@link StatueScreen#renderArmorStandInInventory(GuiGraphics, int, int, int, int, int, float, float, float)}.
+     * {@link StatueScreen#renderArmorStandInInventory(GuiGraphicsExtractor, int, int, int, int, int, float, float, float)}.
      * <p>
      * The returned runnable is used for resetting the entity to the original state after rendering is done.
      *

@@ -1,15 +1,11 @@
 package fuzs.statuemenus.api.v1.client.gui.screens;
 
-import fuzs.puzzleslib.api.client.gui.v2.components.SpritelessImageButton;
 import fuzs.statuemenus.api.v1.client.gui.components.FlatButton;
 import fuzs.statuemenus.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.api.v1.world.inventory.StatueHolder;
 import fuzs.statuemenus.api.v1.world.inventory.data.StatueScreenType;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Renderable;
-import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
@@ -33,8 +29,7 @@ public abstract class StatueWidgetsScreen extends AbstractStatueScreen {
     protected static final int WIDGET_HEIGHT = 22;
 
     protected final List<ArmorStandWidget> widgets;
-    @Nullable
-    private StatueWidgetsScreen.ArmorStandWidget activeWidget;
+    private StatueWidgetsScreen.@Nullable ArmorStandWidget activeWidget;
 
     public StatueWidgetsScreen(StatueHolder holder, Inventory inventory, Component component, DataSyncHandler dataSyncHandler) {
         super(holder, inventory, component, dataSyncHandler);
@@ -119,12 +114,12 @@ public abstract class StatueWidgetsScreen extends AbstractStatueScreen {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         for (ArmorStandWidget widget : this.getActivePositionComponentWidgets()) {
-            widget.render(guiGraphics, mouseX, mouseY, partialTick);
+            widget.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
         }
 
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
+        super.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
     }
 
     @FunctionalInterface
@@ -171,7 +166,7 @@ public abstract class StatueWidgetsScreen extends AbstractStatueScreen {
             this.posX = posX;
             this.posY = posY;
             if (this.supportsToggleButton()) {
-                this.toggleButton = new SpritelessImageButton(posX + 174,
+                this.toggleButton = new ImageButton(posX + 174,
                         posY + 1,
                         20,
                         20,
@@ -201,7 +196,7 @@ public abstract class StatueWidgetsScreen extends AbstractStatueScreen {
         }
 
         @Override
-        public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
             int x = this.posX + 36;
             int y = this.posY + 6;
             if (StatueWidgetsScreen.this.disableMenuRendering()) {
@@ -212,7 +207,7 @@ public abstract class StatueWidgetsScreen extends AbstractStatueScreen {
                         x + textWidth / 2 + 2,
                         y + StatueWidgetsScreen.this.font.lineHeight + 2,
                         backgroundColor);
-                FlatButton.drawCenteredStringWithShadow(guiGraphics,
+                FlatButton.centeredTextWithShadow(guiGraphics,
                         StatueWidgetsScreen.this.font,
                         this.title,
                         x,
@@ -220,7 +215,7 @@ public abstract class StatueWidgetsScreen extends AbstractStatueScreen {
                         -1,
                         true);
             } else {
-                FlatButton.drawCenteredStringWithShadow(guiGraphics,
+                FlatButton.centeredTextWithShadow(guiGraphics,
                         StatueWidgetsScreen.this.font,
                         this.title,
                         x,
