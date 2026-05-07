@@ -1,4 +1,4 @@
-package fuzs.statuemenus.common.api.v1.client.gui.components;
+package fuzs.statuemenus.common.api.v1.client.gui.components.slider;
 
 import fuzs.statuemenus.common.api.v1.client.gui.screens.AbstractStatueScreen;
 import fuzs.statuemenus.common.impl.world.inventory.StatuePoses;

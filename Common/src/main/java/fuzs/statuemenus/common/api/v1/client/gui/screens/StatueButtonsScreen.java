@@ -1,6 +1,6 @@
 package fuzs.statuemenus.common.api.v1.client.gui.screens;
 
-import fuzs.statuemenus.common.api.v1.client.gui.components.TickButton;
+import fuzs.statuemenus.common.api.v1.client.gui.components.ConfirmationTextButton;
 import fuzs.statuemenus.common.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.common.api.v1.world.inventory.StatueHolder;
 import net.minecraft.client.gui.components.Button;
@@ -15,80 +15,80 @@ public abstract class StatueButtonsScreen extends StatueWidgetsScreen {
     }
 
     protected class SingleButtonWidget extends ArmorStandWidget {
-        private final Component title;
-        private final Component description;
-        private final Component clickedTitle;
+        private final Component defaultMessage;
+        private final Component descriptionComponent;
+        private final Component confirmationMessage;
         private final Button.OnPress onPress;
 
-        public SingleButtonWidget(Component title, Component description, Component clickedTitle, Button.OnPress onPress) {
-            this.title = title;
-            this.description = description;
-            this.clickedTitle = clickedTitle;
+        public SingleButtonWidget(Component defaultMessage, Component descriptionComponent, Component confirmationMessage, Button.OnPress onPress) {
+            this.defaultMessage = defaultMessage;
+            this.descriptionComponent = descriptionComponent;
+            this.confirmationMessage = confirmationMessage;
             this.onPress = onPress;
         }
 
         @Override
         public void init(int posX, int posY) {
             super.init(posX, posY);
-            this.addRenderableWidget(new TickButton(posX,
+            this.addRenderableWidget(new ConfirmationTextButton(posX,
                     posY + 1,
                     194,
                     20,
-                    this.title,
-                    this.clickedTitle,
-                    this.onPress)).setTooltip(Tooltip.create(this.description));
+                    this.defaultMessage,
+                    this.confirmationMessage,
+                    this.onPress)).setTooltip(Tooltip.create(this.descriptionComponent));
         }
     }
 
     protected class DoubleButtonWidget extends ArmorStandWidget {
-        private final Component titleLeft;
-        private final Component titleRight;
-        private final Component descriptionLeft;
-        private final Component descriptionRight;
-        private final Component clickedTitleLeft;
-        private final Component clickedTitleRight;
-        private final Button.OnPress onPressLeft;
-        private final Button.OnPress onPressRight;
+        private final Component leftDefaultMessage;
+        private final Component rightDefaultMessage;
+        private final Component leftDescriptionComponent;
+        private final Component rightDescriptionComponent;
+        private final Component leftConfirmationMessage;
+        private final Component rightConfirmationMessage;
+        private final Button.OnPress leftOnPress;
+        private final Button.OnPress rightOnPress;
 
-        public DoubleButtonWidget(Component titleLeft, Component titleRight, Component descriptionLeft, Component descriptionRight, Component clickedTitle, Button.OnPress onPressLeft, Button.OnPress onPressRight) {
-            this(titleLeft,
-                    titleRight,
-                    descriptionLeft,
-                    descriptionRight,
+        public DoubleButtonWidget(Component leftDefaultMessage, Component rightDefaultMessage, Component leftDescriptionComponent, Component rightDescriptionComponent, Component clickedTitle, Button.OnPress leftOnPress, Button.OnPress rightOnPress) {
+            this(leftDefaultMessage,
+                    rightDefaultMessage,
+                    leftDescriptionComponent,
+                    rightDescriptionComponent,
                     clickedTitle,
                     clickedTitle,
-                    onPressLeft,
-                    onPressRight);
+                    leftOnPress,
+                    rightOnPress);
         }
 
-        public DoubleButtonWidget(Component titleLeft, Component titleRight, Component descriptionLeft, Component descriptionRight, Component clickedTitleLeft, Component clickedTitleRight, Button.OnPress onPressLeft, Button.OnPress onPressRight) {
-            this.titleLeft = titleLeft;
-            this.titleRight = titleRight;
-            this.descriptionLeft = descriptionLeft;
-            this.descriptionRight = descriptionRight;
-            this.clickedTitleLeft = clickedTitleLeft;
-            this.clickedTitleRight = clickedTitleRight;
-            this.onPressLeft = onPressLeft;
-            this.onPressRight = onPressRight;
+        public DoubleButtonWidget(Component leftDefaultMessage, Component rightDefaultMessage, Component leftDescriptionComponent, Component rightDescriptionComponent, Component leftConfirmationMessage, Component rightConfirmationMessage, Button.OnPress leftOnPress, Button.OnPress rightOnPress) {
+            this.leftDefaultMessage = leftDefaultMessage;
+            this.rightDefaultMessage = rightDefaultMessage;
+            this.leftDescriptionComponent = leftDescriptionComponent;
+            this.rightDescriptionComponent = rightDescriptionComponent;
+            this.leftConfirmationMessage = leftConfirmationMessage;
+            this.rightConfirmationMessage = rightConfirmationMessage;
+            this.leftOnPress = leftOnPress;
+            this.rightOnPress = rightOnPress;
         }
 
         @Override
         public void init(int posX, int posY) {
             super.init(posX, posY);
-            this.addRenderableWidget(new TickButton(posX,
+            this.addRenderableWidget(new ConfirmationTextButton(posX,
                     posY + 1,
                     94,
                     20,
-                    this.titleLeft,
-                    this.clickedTitleLeft,
-                    this.onPressLeft)).setTooltip(Tooltip.create(this.descriptionLeft));
-            this.addRenderableWidget(new TickButton(posX + 100,
+                    this.leftDefaultMessage,
+                    this.leftConfirmationMessage,
+                    this.leftOnPress)).setTooltip(Tooltip.create(this.leftDescriptionComponent));
+            this.addRenderableWidget(new ConfirmationTextButton(posX + 100,
                     posY + 1,
                     94,
                     20,
-                    this.titleRight,
-                    this.clickedTitleRight,
-                    this.onPressRight)).setTooltip(Tooltip.create(this.descriptionRight));
+                    this.rightDefaultMessage,
+                    this.rightConfirmationMessage,
+                    this.rightOnPress)).setTooltip(Tooltip.create(this.rightDescriptionComponent));
         }
     }
 }

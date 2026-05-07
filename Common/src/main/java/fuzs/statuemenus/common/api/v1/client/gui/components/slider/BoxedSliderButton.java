@@ -1,12 +1,13 @@
-package fuzs.statuemenus.common.api.v1.client.gui.components;
+package fuzs.statuemenus.common.api.v1.client.gui.components.slider;
 
 import fuzs.puzzleslib.common.api.util.v1.CommonHelper;
-import fuzs.statuemenus.common.api.v1.client.gui.screens.AbstractStatueScreen;
+import fuzs.statuemenus.common.impl.StatueMenus;
 import fuzs.statuemenus.common.impl.world.inventory.StatuePoses;
 import net.minecraft.client.InputType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.KeyEvent;
@@ -15,13 +16,19 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 
 import java.util.function.DoubleSupplier;
 
 public abstract class BoxedSliderButton extends AbstractWidget implements UnboundedSliderButton, LiveSliderButton {
-    static final double VALUE_KEY_INTERVAL = 0.035;
+    public static final Identifier SLIDER_SPRITE = StatueMenus.id("container/statue/slider");
+    public static final WidgetSprites SLIDER_HANDLE_SPRITES = new WidgetSprites(StatueMenus.id(
+            "container/statue/slider_handle"),
+            StatueMenus.id("container/statue/slider_handle_disabled"),
+            StatueMenus.id("container/statue/slider_handle_highlighted"));
+    protected static final double VALUE_KEY_INTERVAL = 0.035;
     private static final int SLIDER_SIZE = 13;
 
     private final DoubleSupplier currentHorizontalValue;
@@ -56,75 +63,52 @@ public abstract class BoxedSliderButton extends AbstractWidget implements Unboun
         }
     }
 
-    protected int getYImage() {
-        if (!this.active) {
-            return 0;
-        } else if (this.isHovered || this.canChangeValue) {
-            return 2;
-        } else {
-            return 1;
-        }
-    }
-
     @Override
     public void extractWidgetRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         final int sliderX = (int) (this.horizontalValue * (double) (this.width - SLIDER_SIZE - 2));
         final int sliderY = (int) (this.verticalValue * (double) (this.height - SLIDER_SIZE - 2));
         if (!this.active || !this.isHoveredOrFocused()
                 || !this.horizontalValueLocked() && !this.verticalValueLocked()) {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, AbstractStatueScreen.WIDGETS_LOCATION,
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED,
+                    SLIDER_SPRITE,
                     this.getX(),
                     this.getY(),
-                    0,
-                    120,
                     this.width,
                     this.height,
-                    256,
-                    256,
                     ARGB.white(this.alpha));
         } else if (this.horizontalValueLocked() && this.verticalValueLocked()) {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, AbstractStatueScreen.WIDGETS_LOCATION,
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED,
+                    SLIDER_SPRITE,
                     this.getX() + sliderX,
                     this.getY() + sliderY,
-                    164,
-                    0,
                     SLIDER_SIZE + 2,
                     SLIDER_SIZE + 2,
-                    256,
-                    256,
                     ARGB.white(this.alpha));
         } else if (this.horizontalValueLocked()) {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, AbstractStatueScreen.WIDGETS_LOCATION,
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED,
+                    SLIDER_SPRITE,
                     this.getX() + sliderX,
                     this.getY(),
-                    54,
-                    120,
                     SLIDER_SIZE + 2,
                     this.height,
-                    256,
-                    256,
                     ARGB.white(this.alpha));
         } else {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, AbstractStatueScreen.WIDGETS_LOCATION,
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED,
+                    SLIDER_SPRITE,
                     this.getX(),
                     this.getY() + sliderY,
-                    136,
-                    49,
                     this.width,
                     SLIDER_SIZE + 2,
-                    256,
-                    256,
                     ARGB.white(this.alpha));
         }
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, AbstractStatueScreen.WIDGETS_LOCATION,
+
+        Identifier sprite = SLIDER_HANDLE_SPRITES.get(this.active, this.isHovered || this.canChangeValue);
+        guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED,
+                sprite,
                 this.getX() + 1 + sliderX,
                 this.getY() + 1 + sliderY,
-                151,
-                this.getYImage() * SLIDER_SIZE,
                 SLIDER_SIZE,
                 SLIDER_SIZE,
-                256,
-                256,
                 ARGB.white(this.alpha));
     }
 
@@ -215,6 +199,7 @@ public abstract class BoxedSliderButton extends AbstractWidget implements Unboun
                 this.verticalValue = StatuePoses.snapValue(this.verticalValue, StatuePoses.DEGREES_SNAP_INTERVAL);
             }
         }
+
         if (oldVerticalValue != this.verticalValue) {
             this.applyValue();
         }

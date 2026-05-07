@@ -8,3 +8,5 @@ accessible  field   net/minecraft/client/gui/components/Tooltip cachedTooltip   
 accessible  field   net/minecraft/client/gui/components/Tooltip splitWithLanguage   Lnet/minecraft/locale/Language;
 transitive-accessible   field   net/minecraft/client/gui/components/ImageButton sprites Lnet/minecraft/client/gui/components/WidgetSprites;
 transitive-mutable  field   net/minecraft/client/gui/components/ImageButton sprites Lnet/minecraft/client/gui/components/WidgetSprites;
+extendable  method  net/minecraft/client/gui/components/AbstractSliderButton    getSprite   ()Lnet/minecraft/resources/Identifier;
+extendable  method  net/minecraft/client/gui/components/AbstractSliderButton    getHandleSprite ()Lnet/minecraft/resources/Identifier;

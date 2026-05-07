@@ -2,6 +2,7 @@ package fuzs.statuemenus.common.api.v1.client.gui.screens;
 
 import fuzs.statuemenus.common.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.common.api.v1.world.inventory.StatueHolder;
+import fuzs.statuemenus.common.impl.StatueMenus;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
@@ -9,6 +10,7 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import org.jspecify.annotations.Nullable;
@@ -17,6 +19,8 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class StatueTickBoxScreen<T> extends AbstractStatueScreen {
+    public static final Identifier SEARCH_SPRITE = StatueMenus.id("container/statue/search");
+
     protected EditBox name;
     private int inputUpdateTicks;
 
@@ -129,16 +133,12 @@ public abstract class StatueTickBoxScreen<T> extends AbstractStatueScreen {
     @Override
     public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.extractBackground(guiGraphics, mouseX, mouseY, partialTick);
-        // name edit box background
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_LOCATION,
+        guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED,
+                SEARCH_SPRITE,
                 this.leftPos + 14,
                 this.topPos + 30,
-                0,
-                108,
                 76,
-                12,
-                256,
-                256);
+                12);
         this.name.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
     }
 }

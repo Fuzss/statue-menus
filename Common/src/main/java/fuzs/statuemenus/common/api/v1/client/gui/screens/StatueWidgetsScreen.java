@@ -1,6 +1,6 @@
 package fuzs.statuemenus.common.api.v1.client.gui.screens;
 
-import fuzs.statuemenus.common.api.v1.client.gui.components.ImageButtonWithText;
+import fuzs.statuemenus.common.api.v1.client.gui.components.ImageTextButton;
 import fuzs.statuemenus.common.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.common.api.v1.world.inventory.StatueHolder;
 import fuzs.statuemenus.common.api.v1.world.inventory.data.StatueScreenType;
@@ -216,7 +216,7 @@ public abstract class StatueWidgetsScreen extends AbstractStatueScreen {
                         x + textWidth / 2 + 2,
                         y + StatueWidgetsScreen.this.font.lineHeight + 2,
                         backgroundColor);
-                ImageButtonWithText.centeredTextWithShadow(guiGraphics,
+                ImageTextButton.centeredText(guiGraphics,
                         StatueWidgetsScreen.this.font,
                         this.title,
                         x,
@@ -224,7 +224,7 @@ public abstract class StatueWidgetsScreen extends AbstractStatueScreen {
                         -1,
                         true);
             } else {
-                ImageButtonWithText.centeredTextWithShadow(guiGraphics,
+                ImageTextButton.centeredText(guiGraphics,
                         StatueWidgetsScreen.this.font,
                         this.title,
                         x,

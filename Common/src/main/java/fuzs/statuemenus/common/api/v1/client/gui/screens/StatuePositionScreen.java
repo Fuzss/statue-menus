@@ -2,9 +2,9 @@ package fuzs.statuemenus.common.api.v1.client.gui.screens;
 
 import fuzs.puzzleslib.common.api.client.gui.v2.tooltip.TooltipBuilder;
 import fuzs.puzzleslib.common.api.util.v1.CommonHelper;
-import fuzs.statuemenus.common.api.v1.client.gui.components.ChangingImageButton;
-import fuzs.statuemenus.common.api.v1.client.gui.components.FlatSliderButton;
-import fuzs.statuemenus.common.api.v1.client.gui.components.ImageButtonWithText;
+import fuzs.statuemenus.common.api.v1.client.gui.components.ConfirmationImageButton;
+import fuzs.statuemenus.common.api.v1.client.gui.components.slider.ImageSliderButton;
+import fuzs.statuemenus.common.api.v1.client.gui.components.ImageTextButton;
 import fuzs.statuemenus.common.api.v1.helper.ScaleAttributeHelper;
 import fuzs.statuemenus.common.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.common.api.v1.world.inventory.StatueHolder;
@@ -14,8 +14,6 @@ import fuzs.statuemenus.common.impl.world.inventory.StatuePoses;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Util;
@@ -83,7 +81,7 @@ public class StatuePositionScreen extends StatueButtonsScreen {
         };
     };
     protected static final ArmorStandWidgetFactory<StatuePositionScreen> ROTATION_WIDGET_FACTORY = (StatuePositionScreen screen, LivingEntity livingEntity) -> {
-        return screen.new RotationWidget(Component.translatable(ROTATION_TRANSLATION_KEY),
+        return screen.new SliderWidget(Component.translatable(ROTATION_TRANSLATION_KEY),
                 livingEntity::getYRot,
                 screen.dataSyncHandler::sendRotation);
     };
@@ -151,12 +149,12 @@ public class StatuePositionScreen extends StatueButtonsScreen {
         return (int) Math.round(increment * 16.0);
     }
 
-    protected class ScaleWidget extends RotationWidget {
+    protected class ScaleWidget extends SliderWidget {
         static final double LOGARITHMIC_SCALE = 2.0;
         static final double LOGARITHMIC_SCALE_POW = Math.pow(10.0, -LOGARITHMIC_SCALE);
 
         public ScaleWidget(Component title, DoubleSupplier currentValue, Consumer<Float> newValue) {
-            super(title, currentValue, newValue, FlatSliderButton.NO_SNAP_INTERVAL);
+            super(title, currentValue, newValue, -1.0);
         }
 
         @Override
@@ -194,20 +192,20 @@ public class StatuePositionScreen extends StatueButtonsScreen {
         }
     }
 
-    protected class RotationWidget extends ArmorStandWidget {
+    protected class SliderWidget extends ArmorStandWidget {
         protected final DoubleSupplier valueGetter;
         protected final Consumer<Float> valueSetter;
         private final double snapInterval;
         @Nullable
-        protected FlatSliderButton sliderButton;
+        protected ImageSliderButton sliderButton;
         @Nullable
         protected Button resetButton;
 
-        public RotationWidget(Component title, DoubleSupplier valueGetter, Consumer<Float> valueSetter) {
+        public SliderWidget(Component title, DoubleSupplier valueGetter, Consumer<Float> valueSetter) {
             this(title, valueGetter, valueSetter, StatuePoses.DEGREES_SNAP_INTERVAL);
         }
 
-        public RotationWidget(Component title, DoubleSupplier valueGetter, Consumer<Float> valueSetter, double snapInterval) {
+        public SliderWidget(Component title, DoubleSupplier valueGetter, Consumer<Float> valueSetter, double snapInterval) {
             super(title);
             this.valueGetter = valueGetter;
             this.valueSetter = valueSetter;
@@ -246,7 +244,7 @@ public class StatuePositionScreen extends StatueButtonsScreen {
         @Override
         public void reset() {
             if (this.sliderButton != null) {
-                this.sliderButton.setSliderValue(this.getCurrentValue());
+                this.sliderButton.setRawValue(this.getCurrentValue());
             }
         }
 
@@ -274,60 +272,37 @@ public class StatuePositionScreen extends StatueButtonsScreen {
         @Override
         public void init(int posX, int posY) {
             super.init(posX, posY);
-            this.sliderButton = new FlatSliderButton(posX + 76,
-                    posY + 1,
-                    90,
-                    20,
-                    0,
-                    184,
-                    WIDGETS_LOCATION,
-                    CommonComponents.EMPTY,
-                    this.getCurrentValue()) {
-                private boolean dirty;
+            this.sliderButton = new ImageSliderButton(posX + 76, posY + 1, 90, 20, this.getCurrentValue()) {
+                @Override
+                protected double getSnapInterval() {
+                    return SliderWidget.this.snapInterval;
+                }
 
                 @Override
                 public void extractWidgetRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
                     super.extractWidgetRenderState(guiGraphics, mouseX, mouseY, partialTick);
                     double mouseValue = StatuePoses.snapValue((mouseX - this.getX()) / (double) this.getWidth(),
-                            this.snapInterval);
-                    this.setTooltip(Tooltip.create(RotationWidget.this.getTooltipComponent(mouseValue)));
-                }
-
-                @Override
-                protected void updateMessage() {
-                    // NO-OP
+                            this.getSnapInterval());
+                    this.setTooltip(Tooltip.create(StatuePositionScreen.SliderWidget.this.getTooltipComponent(mouseValue)));
                 }
 
                 @Override
                 protected void applyValue() {
-                    this.dirty = true;
-                    RotationWidget.this.applyClientValue(this.value);
+                    super.applyValue();
+                    SliderWidget.this.applyClientValue(this.value);
                 }
 
                 @Override
-                public void onRelease(MouseButtonEvent mouseButtonEvent) {
-                    super.onRelease(mouseButtonEvent);
-                    this.clearDirty();
-                }
-
-                @Override
-                public boolean isDirty() {
-                    return this.dirty;
-                }
-
-                @Override
-                public void clearDirty() {
-                    // we use #onRelease instead of directly applying in #applyValue as the armor stand will otherwise glitch out visually since the server constantly sends outdated values
-                    if (this.isDirty()) {
-                        this.dirty = false;
-                        RotationWidget.this.setNewValue(this.value);
+                public void clearDirty(boolean isDirty) {
+                    super.clearDirty(isDirty);
+                    if (isDirty) {
+                        SliderWidget.this.setNewValue(this.value);
                     }
                 }
             };
-            this.sliderButton.snapInterval = this.snapInterval;
             this.addRenderableWidget(this.sliderButton);
             if (this.getDefaultValue().isPresent()) {
-                this.resetButton = this.addRenderableWidget(new ChangingImageButton(posX + 174,
+                this.resetButton = this.addRenderableWidget(new ConfirmationImageButton(posX + 174,
                         posY + 1,
                         20,
                         20,
@@ -362,7 +337,7 @@ public class StatuePositionScreen extends StatueButtonsScreen {
             super.init(posX, posY);
             for (int i = 0; i < INCREMENTS.length; i++) {
                 double increment = INCREMENTS[i];
-                AbstractWidget widget = this.addRenderableWidget(new ImageButtonWithText(
+                AbstractWidget widget = this.addRenderableWidget(new ImageTextButton(
                         posX + 76 + i * 24 + (i > 1 ? 1 : 0), posY + 1, 20, 20, BUTTON_SPRITES, (Button button) -> {
                     this.setActiveIncrement(button, increment);
                 }, Component.literal(String.valueOf(getBlockPixelIncrement(increment)))));
@@ -390,7 +365,7 @@ public class StatuePositionScreen extends StatueButtonsScreen {
 
         @Override
         public boolean alwaysVisible(@Nullable ArmorStandWidget activeWidget) {
-            return !(activeWidget instanceof RotationWidget);
+            return !(activeWidget instanceof SliderWidget);
         }
     }
 

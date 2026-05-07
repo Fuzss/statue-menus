@@ -1,9 +1,9 @@
 package fuzs.statuemenus.common.api.v1.client.gui.screens;
 
-import fuzs.statuemenus.common.api.v1.client.gui.components.BoxedSliderButton;
-import fuzs.statuemenus.common.api.v1.client.gui.components.ChangingImageButton;
-import fuzs.statuemenus.common.api.v1.client.gui.components.LiveSliderButton;
-import fuzs.statuemenus.common.api.v1.client.gui.components.VerticalSliderButton;
+import fuzs.statuemenus.common.api.v1.client.gui.components.slider.BoxedSliderButton;
+import fuzs.statuemenus.common.api.v1.client.gui.components.ConfirmationImageButton;
+import fuzs.statuemenus.common.api.v1.client.gui.components.slider.LiveSliderButton;
+import fuzs.statuemenus.common.api.v1.client.gui.components.slider.VerticalSliderButton;
 import fuzs.statuemenus.common.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.common.api.v1.world.inventory.StatueHolder;
 import fuzs.statuemenus.common.api.v1.world.inventory.data.PosePartMutator;
@@ -149,7 +149,7 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                 }
             }).setTooltip(tooltip);
         }
-        this.addRenderableWidget(new ChangingImageButton(this.leftPos + 83,
+        this.addRenderableWidget(new ConfirmationImageButton(this.leftPos + 83,
                 this.topPos + 34,
                 20,
                 20,
@@ -159,7 +159,7 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                     StatuePose statuePose = StatuePose.randomize(this.getPosePartMutators(), clampRotations);
                     this.setCurrentPose(this.setupRandomPose(statuePose));
                 })).setTooltip(Tooltip.create(Component.translatable(RANDOMIZE_TRANSLATION_KEY)));
-        this.addRenderableWidget(new ChangingImageButton(this.leftPos + 107,
+        this.addRenderableWidget(new ConfirmationImageButton(this.leftPos + 107,
                 this.topPos + 34,
                 20,
                 20,
@@ -168,7 +168,7 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                 (Button button) -> {
                     this.setCurrentPose(StatuePose.EMPTY);
                 })).setTooltip(Tooltip.create(Component.translatable(RESET_TRANSLATION_KEY)));
-        this.addRenderableWidget(new ChangingImageButton(this.leftPos + 83,
+        this.addRenderableWidget(new ConfirmationImageButton(this.leftPos + 83,
                 this.topPos + 134,
                 44,
                 20,
@@ -178,7 +178,7 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                     this.setCurrentPose(this.currentPose.mirror());
                 })).setTooltip(Tooltip.create(Component.translatable(MIRROR_TRANSLATION_KEY)));
         AbstractWidget[] pasteButton = new AbstractWidget[1];
-        this.addRenderableWidget(new ChangingImageButton(this.leftPos + 83,
+        this.addRenderableWidget(new ConfirmationImageButton(this.leftPos + 83,
                 this.topPos + 158,
                 20,
                 20,
@@ -188,7 +188,7 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                     clipboard = this.currentPose;
                     pasteButton[0].active = true;
                 })).setTooltip(Tooltip.create(Component.translatable(COPY_TRANSLATION_KEY)));
-        pasteButton[0] = Util.make(this.addRenderableWidget(new ChangingImageButton(this.leftPos + 107,
+        pasteButton[0] = Util.make(this.addRenderableWidget(new ConfirmationImageButton(this.leftPos + 107,
                 this.topPos + 158,
                 20,
                 20,
@@ -198,7 +198,7 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                     if (clipboard != null) {
                         this.setCurrentPose(clipboard);
                     }
-                })), (ChangingImageButton widget) -> {
+                })), (ConfirmationImageButton widget) -> {
             widget.setTooltip(Tooltip.create(Component.translatable(PASTE_TRANSLATION_KEY)));
             widget.active = clipboard != null;
         });
@@ -240,7 +240,7 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                 @Override
                 public void onRelease(MouseButtonEvent mouseButtonEvent) {
                     super.onRelease(mouseButtonEvent);
-                    this.clearDirty();
+                    this.clearDirty(this.isDirty());
                 }
 
                 @Override
@@ -249,9 +249,9 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                 }
 
                 @Override
-                public void clearDirty() {
-                    if (this.isDirty()) {
-                        this.dirty = false;
+                public void clearDirty(boolean isDirty) {
+                    this.dirty = false;
+                    if (isDirty) {
                         StatueRotationsScreen.this.setCurrentPose(StatueRotationsScreen.this.currentPose);
                     }
                 }
@@ -284,7 +284,7 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                 @Override
                 public void onRelease(MouseButtonEvent mouseButtonEvent) {
                     super.onRelease(mouseButtonEvent);
-                    this.clearDirty();
+                    this.clearDirty(this.isDirty());
                 }
 
                 @Override
@@ -293,9 +293,9 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                 }
 
                 @Override
-                public void clearDirty() {
-                    if (this.isDirty()) {
-                        this.dirty = false;
+                public void clearDirty(boolean isDirty) {
+                    this.dirty = false;
+                    if (isDirty) {
                         StatueRotationsScreen.this.setCurrentPose(StatueRotationsScreen.this.currentPose);
                     }
                 }

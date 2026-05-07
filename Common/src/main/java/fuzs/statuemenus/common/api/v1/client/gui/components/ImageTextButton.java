@@ -6,13 +6,18 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.WidgetSprites;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.Style;
 
-public class ImageButtonWithText extends ImageButton {
+public class ImageTextButton extends ImageButton {
 
-    public ImageButtonWithText(int x, int y, int width, int height, WidgetSprites sprites, OnPress onPress, Component message) {
+    public ImageTextButton(int x, int y, int width, int height, WidgetSprites sprites, OnPress onPress) {
+        this(x, y, width, height, sprites, onPress, CommonComponents.EMPTY);
+    }
+
+    public ImageTextButton(int x, int y, int width, int height, WidgetSprites sprites, OnPress onPress, Component message) {
         super(x, y, width, height, sprites, onPress, message);
         this.setMessage(message);
     }
@@ -20,7 +25,7 @@ public class ImageButtonWithText extends ImageButton {
     /**
      * @see GuiGraphicsExtractor#centeredText(Font, String, int, int, int)
      */
-    public static void centeredTextWithShadow(GuiGraphicsExtractor guiGraphics, Font font, Component component, int x, int y, int color, boolean dropShadow) {
+    public static void centeredText(GuiGraphicsExtractor guiGraphics, Font font, Component component, int x, int y, int color, boolean dropShadow) {
         guiGraphics.text(font, component, x - font.width(component) / 2, y, color, dropShadow);
     }
 
@@ -38,18 +43,17 @@ public class ImageButtonWithText extends ImageButton {
     @Override
     public void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
         super.extractContents(guiGraphics, mouseX, mouseY, partialTicks);
+        this.extractDefaultLabel(guiGraphics);
+    }
+
+    protected void extractDefaultLabel(GuiGraphicsExtractor guiGraphics) {
         Font font = Minecraft.getInstance().font;
-        ImageButtonWithText.centeredTextWithShadow(guiGraphics,
+        ImageTextButton.centeredText(guiGraphics,
                 font,
                 this.getMessage(),
-                this.getX() + this.width / 2 + this.getMessageXOffset(),
+                this.getX() + this.width / 2,
                 this.getY() + (this.height - 8) / 2,
                 -1,
                 false);
-    }
-
-    @Deprecated
-    protected int getMessageXOffset() {
-        return 0;
     }
 }

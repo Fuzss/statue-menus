@@ -3,7 +3,7 @@ package fuzs.statuemenus.common.api.v1.client.gui.screens;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import fuzs.puzzleslib.common.api.client.key.v1.KeyMappingHelper;
-import fuzs.statuemenus.common.api.v1.client.gui.components.UnboundedSliderButton;
+import fuzs.statuemenus.common.api.v1.client.gui.components.slider.UnboundedSliderButton;
 import fuzs.statuemenus.common.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.common.api.v1.world.entity.decoration.StatueEntity;
 import fuzs.statuemenus.common.api.v1.world.inventory.StatueHolder;
@@ -37,8 +37,7 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
     public static final String CREDITS_TRANSLATION_KEY = StatueScreenType.POSES.id().toLanguageKey("screen", "credits");
     public static final Identifier TEXTURE_LOCATION = StatueMenus.id("textures/gui/container/statue/background.png");
     public static final Identifier WIDGETS_LOCATION = StatueMenus.id("textures/gui/container/statue/widgets.png");
-    public static final Identifier BACKGROUND_SMALL_SPRITE = StatueMenus.id("container/statue/background_small");
-    public static final Identifier BACKGROUND_LARGE_SPRITE = StatueMenus.id("container/statue/background_large");
+    public static final Identifier BACKGROUND_SPRITE = StatueMenus.id("container/statue/background");
     public static final WidgetSprites TAB_SPRITES = new WidgetSprites(StatueMenus.id("container/statue/tab_selected"),
             StatueMenus.id("container/statue/tab_unselected"),
             StatueMenus.id("container/statue/tab_selected"));
@@ -269,21 +268,12 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
                     mouseY,
                     this.dataSyncHandler.getScreenTypes());
             if (this.showInventoryEntity()) {
-                if (this.smallInventoryEntity) {
-                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED,
-                            BACKGROUND_SMALL_SPRITE,
-                            this.leftPos + this.inventoryEntityX,
-                            this.topPos + this.inventoryEntityY,
-                            this.getInventoryEntityBackgroundWidth(true),
-                            this.getInventoryEntityBackgroundHeight(true));
-                } else {
-                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED,
-                            BACKGROUND_LARGE_SPRITE,
-                            this.leftPos + this.inventoryEntityX,
-                            this.topPos + this.inventoryEntityY,
-                            this.getInventoryEntityBackgroundWidth(false),
-                            this.getInventoryEntityBackgroundHeight(false));
-                }
+                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED,
+                        BACKGROUND_SPRITE,
+                        this.leftPos + this.inventoryEntityX,
+                        this.topPos + this.inventoryEntityY,
+                        this.getInventoryEntityBackgroundWidth(this.smallInventoryEntity),
+                        this.getInventoryEntityBackgroundHeight(this.smallInventoryEntity));
             }
         }
     }
@@ -445,9 +435,9 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
 
     @Override
     public void removed() {
-        for (GuiEventListener child : this.children()) {
-            if (child instanceof UnboundedSliderButton sliderButton) {
-                sliderButton.clearDirty();
+        for (GuiEventListener listener : this.children()) {
+            if (listener instanceof UnboundedSliderButton sliderButton) {
+                sliderButton.clearDirty(sliderButton.isDirty());
             }
         }
     }
