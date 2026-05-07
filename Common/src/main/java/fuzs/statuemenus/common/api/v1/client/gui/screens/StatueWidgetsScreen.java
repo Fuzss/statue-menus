@@ -1,6 +1,6 @@
 package fuzs.statuemenus.common.api.v1.client.gui.screens;
 
-import fuzs.statuemenus.common.api.v1.client.gui.components.FlatButton;
+import fuzs.statuemenus.common.api.v1.client.gui.components.ImageButtonWithText;
 import fuzs.statuemenus.common.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.common.api.v1.world.inventory.StatueHolder;
 import fuzs.statuemenus.common.api.v1.world.inventory.data.StatueScreenType;
@@ -51,7 +51,7 @@ public abstract class StatueWidgetsScreen extends AbstractStatueScreen {
         if (this.activeWidget != null) {
             List<ArmorStandWidget> activeWidgets = new ArrayList<>(List.of(this.activeWidget));
             for (ArmorStandWidget widget : this.widgets) {
-                if (widget.alwaysVisible(this.activeWidget)) {
+                if (widget != this.activeWidget && widget.alwaysVisible(this.activeWidget)) {
                     activeWidgets.add(widget);
                 }
             }
@@ -73,7 +73,7 @@ public abstract class StatueWidgetsScreen extends AbstractStatueScreen {
     }
 
     @Override
-    protected boolean renderInventoryEntity() {
+    protected boolean showInventoryEntity() {
         return false;
     }
 
@@ -198,6 +198,12 @@ public abstract class StatueWidgetsScreen extends AbstractStatueScreen {
             return widget;
         }
 
+        protected <T extends GuiEventListener & Renderable> T addRenderableOnly(T widget) {
+            this.children.add(widget);
+            StatueWidgetsScreen.this.addRenderableOnly(widget);
+            return widget;
+        }
+
         @Override
         public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
             int x = this.posX + 36;
@@ -210,7 +216,7 @@ public abstract class StatueWidgetsScreen extends AbstractStatueScreen {
                         x + textWidth / 2 + 2,
                         y + StatueWidgetsScreen.this.font.lineHeight + 2,
                         backgroundColor);
-                FlatButton.centeredTextWithShadow(guiGraphics,
+                ImageButtonWithText.centeredTextWithShadow(guiGraphics,
                         StatueWidgetsScreen.this.font,
                         this.title,
                         x,
@@ -218,7 +224,7 @@ public abstract class StatueWidgetsScreen extends AbstractStatueScreen {
                         -1,
                         true);
             } else {
-                FlatButton.centeredTextWithShadow(guiGraphics,
+                ImageButtonWithText.centeredTextWithShadow(guiGraphics,
                         StatueWidgetsScreen.this.font,
                         this.title,
                         x,
@@ -228,7 +234,7 @@ public abstract class StatueWidgetsScreen extends AbstractStatueScreen {
             }
         }
 
-        public boolean alwaysVisible(@Nullable StatueWidgetsScreen.ArmorStandWidget activeWidget) {
+        public boolean alwaysVisible(StatueWidgetsScreen.@Nullable ArmorStandWidget activeWidget) {
             return activeWidget == this;
         }
     }

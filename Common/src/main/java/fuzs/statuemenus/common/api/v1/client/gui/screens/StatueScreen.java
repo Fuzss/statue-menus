@@ -24,16 +24,16 @@ public interface StatueScreen {
 
     DataSyncHandler getDataSyncHandler();
 
-    default int getInventoryEntityScissorWidth(boolean smallInventoryEntity) {
-        return smallInventoryEntity ? 48 : 74;
+    default int getInventoryEntityScissorWidth(boolean isSmall) {
+        return isSmall ? 48 : 74;
     }
 
-    default int getInventoryEntityScissorHeight(boolean smallInventoryEntity) {
-        return smallInventoryEntity ? 70 : 106;
+    default int getInventoryEntityScissorHeight(boolean isSmall) {
+        return isSmall ? 70 : 106;
     }
 
-    default int getInventoryEntityScale(boolean smallInventoryEntity) {
-        return smallInventoryEntity ? 30 : 45;
+    default int getInventoryEntityScale(boolean isSmall) {
+        return isSmall ? 30 : 45;
     }
 
     default void renderArmorStandInInventory(GuiGraphicsExtractor guiGraphics, int x1, int y1, int x2, int y2, int scale, float mouseX, float mouseY, float partialTick) {

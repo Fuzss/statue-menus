@@ -2,9 +2,9 @@ package fuzs.statuemenus.common.api.v1.client.gui.screens;
 
 import fuzs.puzzleslib.common.api.client.gui.v2.tooltip.TooltipBuilder;
 import fuzs.puzzleslib.common.api.util.v1.CommonHelper;
-import fuzs.statuemenus.common.api.v1.client.gui.components.FlatButton;
+import fuzs.statuemenus.common.api.v1.client.gui.components.ChangingImageButton;
 import fuzs.statuemenus.common.api.v1.client.gui.components.FlatSliderButton;
-import fuzs.statuemenus.common.api.v1.client.gui.components.FlatTickButton;
+import fuzs.statuemenus.common.api.v1.client.gui.components.ImageButtonWithText;
 import fuzs.statuemenus.common.api.v1.helper.ScaleAttributeHelper;
 import fuzs.statuemenus.common.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.common.api.v1.world.inventory.StatueHolder;
@@ -34,6 +34,9 @@ import java.util.function.DoubleConsumer;
 import java.util.function.DoubleSupplier;
 
 public class StatuePositionScreen extends StatueButtonsScreen {
+    public static final WidgetSprites BUTTON_SPRITES = new WidgetSprites(StatueMenus.id("container/statue/button"),
+            StatueMenus.id("container/statue/button_disabled"),
+            StatueMenus.id("container/statue/button_highlighted"));
     public static final WidgetSprites UP_BUTTON_SPRITES = new WidgetSprites(StatueMenus.id("container/statue/up_button"),
             StatueMenus.id("container/statue/up_button_disabled"),
             StatueMenus.id("container/statue/up_button_highlighted"));
@@ -324,13 +327,12 @@ public class StatuePositionScreen extends StatueButtonsScreen {
             this.sliderButton.snapInterval = this.snapInterval;
             this.addRenderableWidget(this.sliderButton);
             if (this.getDefaultValue().isPresent()) {
-                this.resetButton = this.addRenderableWidget(new FlatTickButton(posX + 174,
+                this.resetButton = this.addRenderableWidget(new ChangingImageButton(posX + 174,
                         posY + 1,
                         20,
                         20,
-                        240,
-                        124,
-                        WIDGETS_LOCATION,
+                        StatueRotationsScreen.RESET_BUTTON_SPRITES,
+                        StatueRotationsScreen.TICK_BUTTON_SPRITES,
                         (Button button) -> {
                             this.getDefaultValue().ifPresent((double value) -> {
                                 this.setNewValue(value);
@@ -360,17 +362,10 @@ public class StatuePositionScreen extends StatueButtonsScreen {
             super.init(posX, posY);
             for (int i = 0; i < INCREMENTS.length; i++) {
                 double increment = INCREMENTS[i];
-                AbstractWidget widget = this.addRenderableWidget(new FlatButton(posX + 76 + i * 24 + (i > 1 ? 1 : 0),
-                        posY + 1,
-                        20,
-                        20,
-                        0,
-                        184,
-                        WIDGETS_LOCATION,
-                        Component.literal(String.valueOf(getBlockPixelIncrement(increment))),
-                        (Button button) -> {
-                            this.setActiveIncrement(button, increment);
-                        }));
+                AbstractWidget widget = this.addRenderableWidget(new ImageButtonWithText(
+                        posX + 76 + i * 24 + (i > 1 ? 1 : 0), posY + 1, 20, 20, BUTTON_SPRITES, (Button button) -> {
+                    this.setActiveIncrement(button, increment);
+                }, Component.literal(String.valueOf(getBlockPixelIncrement(increment)))));
                 TooltipBuilder.create(getPixelIncrementComponent(increment), getBlockIncrementComponent(increment))
                         .build(widget);
                 if (increment == currentIncrement) {
@@ -435,7 +430,7 @@ public class StatuePositionScreen extends StatueButtonsScreen {
             this.editBox.setEditable(false);
             this.editBox.setTextColorUneditable(0XFFE0E0E0);
             this.editBox.setValue(BLOCK_INCREMENT_FORMAT.format(this.getPositionValue()));
-            this.addRenderableWidget(this.editBox);
+            this.addRenderableOnly(this.editBox);
             AbstractWidget incrementButton = this.addRenderableWidget(new ImageButton(posX + 149,
                     posY + 1,
                     20,

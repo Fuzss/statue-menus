@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 
+@Deprecated
 public class FlatButton extends Button {
     private final int textureX;
     private final int textureY;
@@ -63,7 +64,7 @@ public class FlatButton extends Button {
                 ARGB.white(this.alpha));
         this.extractBackground(guiGraphics, mouseX, mouseY, partialTick);
         Font font = Minecraft.getInstance().font;
-        centeredTextWithShadow(guiGraphics,
+        ImageButtonWithText.centeredTextWithShadow(guiGraphics,
                 font,
                 this.getMessage(),
                 this.getX() + this.width / 2 + this.getMessageXOffset(),
@@ -82,12 +83,5 @@ public class FlatButton extends Button {
 
     protected int getMessageXOffset() {
         return 0;
-    }
-
-    /**
-     * @see GuiGraphicsExtractor#centeredText(Font, String, int, int, int)
-     */
-    public static void centeredTextWithShadow(GuiGraphicsExtractor guiGraphics, Font font, Component component, int x, int y, int color, boolean dropShadow) {
-        guiGraphics.text(font, component, x - font.width(component) / 2, y, color, dropShadow);
     }
 }

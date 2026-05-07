@@ -37,6 +37,8 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
     public static final String CREDITS_TRANSLATION_KEY = StatueScreenType.POSES.id().toLanguageKey("screen", "credits");
     public static final Identifier TEXTURE_LOCATION = StatueMenus.id("textures/gui/container/statue/background.png");
     public static final Identifier WIDGETS_LOCATION = StatueMenus.id("textures/gui/container/statue/widgets.png");
+    public static final Identifier BACKGROUND_SMALL_SPRITE = StatueMenus.id("container/statue/background_small");
+    public static final Identifier BACKGROUND_LARGE_SPRITE = StatueMenus.id("container/statue/background_large");
     public static final WidgetSprites TAB_SPRITES = new WidgetSprites(StatueMenus.id("container/statue/tab_selected"),
             StatueMenus.id("container/statue/tab_unselected"),
             StatueMenus.id("container/statue/tab_selected"));
@@ -145,7 +147,7 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
         return true;
     }
 
-    protected boolean renderInventoryEntity() {
+    protected boolean showInventoryEntity() {
         return true;
     }
 
@@ -194,7 +196,7 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
     public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
         if (!this.disableMenuRendering()) {
-            if (this.renderInventoryEntity()) {
+            if (this.showInventoryEntity()) {
                 int posX = this.leftPos + this.inventoryEntityX + 1;
                 int posY = this.topPos + this.inventoryEntityY + 1;
                 this.renderArmorStandInInventory(guiGraphics,
@@ -266,27 +268,32 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
                     mouseX,
                     mouseY,
                     this.dataSyncHandler.getScreenTypes());
-            if (this.renderInventoryEntity()) {
-                guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
-                        WIDGETS_LOCATION,
-                        this.leftPos + this.inventoryEntityX,
-                        this.topPos + this.inventoryEntityY,
-                        this.smallInventoryEntity ? 200 : 0,
-                        this.smallInventoryEntity ? 184 : 0,
-                        this.getInventoryEntityBackgroundWidth(),
-                        this.getInventoryEntityBackgroundHeight(),
-                        256,
-                        256);
+            if (this.showInventoryEntity()) {
+                if (this.smallInventoryEntity) {
+                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED,
+                            BACKGROUND_SMALL_SPRITE,
+                            this.leftPos + this.inventoryEntityX,
+                            this.topPos + this.inventoryEntityY,
+                            this.getInventoryEntityBackgroundWidth(true),
+                            this.getInventoryEntityBackgroundHeight(true));
+                } else {
+                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED,
+                            BACKGROUND_LARGE_SPRITE,
+                            this.leftPos + this.inventoryEntityX,
+                            this.topPos + this.inventoryEntityY,
+                            this.getInventoryEntityBackgroundWidth(false),
+                            this.getInventoryEntityBackgroundHeight(false));
+                }
             }
         }
     }
 
-    protected int getInventoryEntityBackgroundWidth() {
-        return this.getInventoryEntityScissorWidth(this.smallInventoryEntity) + 2;
+    protected int getInventoryEntityBackgroundWidth(boolean isSmall) {
+        return this.getInventoryEntityScissorWidth(isSmall) + 2;
     }
 
-    protected int getInventoryEntityBackgroundHeight() {
-        return this.getInventoryEntityScissorHeight(this.smallInventoryEntity) + 2;
+    protected int getInventoryEntityBackgroundHeight(boolean isSmall) {
+        return this.getInventoryEntityScissorHeight(isSmall) + 2;
     }
 
     @Override

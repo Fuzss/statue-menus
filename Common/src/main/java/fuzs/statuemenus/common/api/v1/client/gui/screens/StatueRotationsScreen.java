@@ -1,7 +1,7 @@
 package fuzs.statuemenus.common.api.v1.client.gui.screens;
 
 import fuzs.statuemenus.common.api.v1.client.gui.components.BoxedSliderButton;
-import fuzs.statuemenus.common.api.v1.client.gui.components.FlatTickButton;
+import fuzs.statuemenus.common.api.v1.client.gui.components.ChangingImageButton;
 import fuzs.statuemenus.common.api.v1.client.gui.components.LiveSliderButton;
 import fuzs.statuemenus.common.api.v1.client.gui.components.VerticalSliderButton;
 import fuzs.statuemenus.common.api.v1.network.client.data.DataSyncHandler;
@@ -30,6 +30,14 @@ import java.util.List;
 import java.util.function.Function;
 
 public class StatueRotationsScreen extends AbstractStatueScreen {
+    public static final WidgetSprites TICK_BUTTON_SPRITES = new WidgetSprites(StatueMenus.id(
+            "container/statue/tick_button"),
+            StatueMenus.id("container/statue/tick_button_disabled"),
+            StatueMenus.id("container/statue/tick_button_highlighted"));
+    public static final WidgetSprites TICK_BUTTON_LARGE_SPRITES = new WidgetSprites(StatueMenus.id(
+            "container/statue/tick_button_large"),
+            StatueMenus.id("container/statue/tick_button_large_disabled"),
+            StatueMenus.id("container/statue/tick_button_large_highlighted"));
     public static final WidgetSprites LOCK_CLOSED_BUTTON_SPRITES = new WidgetSprites(StatueMenus.id(
             "container/statue/lock_closed_button"),
             StatueMenus.id("container/statue/lock_closed_button_disabled"),
@@ -38,6 +46,26 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
             "container/statue/lock_open_button"),
             StatueMenus.id("container/statue/lock_open_button_disabled"),
             StatueMenus.id("container/statue/lock_open_button_highlighted"));
+    public static final WidgetSprites MIRROR_BUTTON_SPRITES = new WidgetSprites(StatueMenus.id(
+            "container/statue/mirror_button"),
+            StatueMenus.id("container/statue/mirror_button_disabled"),
+            StatueMenus.id("container/statue/mirror_button_highlighted"));
+    public static final WidgetSprites RANDOMIZE_BUTTON_SPRITES = new WidgetSprites(StatueMenus.id(
+            "container/statue/randomize_button"),
+            StatueMenus.id("container/statue/randomize_button_disabled"),
+            StatueMenus.id("container/statue/randomize_button_highlighted"));
+    public static final WidgetSprites COPY_BUTTON_SPRITES = new WidgetSprites(StatueMenus.id(
+            "container/statue/copy_button"),
+            StatueMenus.id("container/statue/copy_button_disabled"),
+            StatueMenus.id("container/statue/copy_button_highlighted"));
+    public static final WidgetSprites PASTE_BUTTON_SPRITES = new WidgetSprites(StatueMenus.id(
+            "container/statue/paste_button"),
+            StatueMenus.id("container/statue/paste_button_disabled"),
+            StatueMenus.id("container/statue/paste_button_highlighted"));
+    public static final WidgetSprites RESET_BUTTON_SPRITES = new WidgetSprites(StatueMenus.id(
+            "container/statue/reset_button"),
+            StatueMenus.id("container/statue/reset_button_disabled"),
+            StatueMenus.id("container/statue/reset_button_highlighted"));
     public static final String TIP_TRANSLATION_KEY = StatueScreenType.ROTATIONS.id().toLanguageKey("screen", "tip");
     public static final String UNLIMITED_TRANSLATION_KEY = StatueScreenType.ROTATIONS.id()
             .toLanguageKey("screen", "unlimited");
@@ -121,61 +149,56 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                 }
             }).setTooltip(tooltip);
         }
-        this.addRenderableWidget(new FlatTickButton(this.leftPos + 83,
+        this.addRenderableWidget(new ChangingImageButton(this.leftPos + 83,
                 this.topPos + 34,
                 20,
                 20,
-                192,
-                124,
-                WIDGETS_LOCATION,
+                RANDOMIZE_BUTTON_SPRITES,
+                TICK_BUTTON_SPRITES,
                 (Button button) -> {
                     StatuePose statuePose = StatuePose.randomize(this.getPosePartMutators(), clampRotations);
                     this.setCurrentPose(this.setupRandomPose(statuePose));
                 })).setTooltip(Tooltip.create(Component.translatable(RANDOMIZE_TRANSLATION_KEY)));
-        this.addRenderableWidget(new FlatTickButton(this.leftPos + 107,
+        this.addRenderableWidget(new ChangingImageButton(this.leftPos + 107,
                 this.topPos + 34,
                 20,
                 20,
-                240,
-                124,
-                WIDGETS_LOCATION,
+                RESET_BUTTON_SPRITES,
+                TICK_BUTTON_SPRITES,
                 (Button button) -> {
                     this.setCurrentPose(StatuePose.EMPTY);
                 })).setTooltip(Tooltip.create(Component.translatable(RESET_TRANSLATION_KEY)));
-        this.addRenderableWidget(new FlatTickButton(this.leftPos + 83,
+        this.addRenderableWidget(new ChangingImageButton(this.leftPos + 83,
                 this.topPos + 134,
                 44,
                 20,
-                179,
-                0,
-                WIDGETS_LOCATION,
+                MIRROR_BUTTON_SPRITES,
+                TICK_BUTTON_LARGE_SPRITES,
                 (Button button) -> {
                     this.setCurrentPose(this.currentPose.mirror());
                 })).setTooltip(Tooltip.create(Component.translatable(MIRROR_TRANSLATION_KEY)));
         AbstractWidget[] pasteButton = new AbstractWidget[1];
-        this.addRenderableWidget(new FlatTickButton(this.leftPos + 83,
+        this.addRenderableWidget(new ChangingImageButton(this.leftPos + 83,
                 this.topPos + 158,
                 20,
                 20,
-                208,
-                124,
-                WIDGETS_LOCATION,
+                COPY_BUTTON_SPRITES,
+                TICK_BUTTON_SPRITES,
                 (Button button) -> {
                     clipboard = this.currentPose;
                     pasteButton[0].active = true;
                 })).setTooltip(Tooltip.create(Component.translatable(COPY_TRANSLATION_KEY)));
-        pasteButton[0] = Util.make(this.addRenderableWidget(new FlatTickButton(this.leftPos + 107,
+        pasteButton[0] = Util.make(this.addRenderableWidget(new ChangingImageButton(this.leftPos + 107,
                 this.topPos + 158,
                 20,
                 20,
-                224,
-                124,
-                WIDGETS_LOCATION,
+                PASTE_BUTTON_SPRITES,
+                TICK_BUTTON_SPRITES,
                 (Button button) -> {
                     if (clipboard != null) {
                         this.setCurrentPose(clipboard);
                     }
-                })), (FlatTickButton widget) -> {
+                })), (ChangingImageButton widget) -> {
             widget.setTooltip(Tooltip.create(Component.translatable(PASTE_TRANSLATION_KEY)));
             widget.active = clipboard != null;
         });

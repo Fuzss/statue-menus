@@ -6,3 +6,5 @@ mutable field   net/minecraft/world/entity/decoration/ArmorStand    disabledSlot
 accessible  field   net/minecraft/client/gui/components/Tooltip message Lnet/minecraft/network/chat/Component;
 accessible  field   net/minecraft/client/gui/components/Tooltip cachedTooltip   Ljava/util/List;
 accessible  field   net/minecraft/client/gui/components/Tooltip splitWithLanguage   Lnet/minecraft/locale/Language;
+transitive-accessible   field   net/minecraft/client/gui/components/ImageButton sprites Lnet/minecraft/client/gui/components/WidgetSprites;
+transitive-mutable  field   net/minecraft/client/gui/components/ImageButton sprites Lnet/minecraft/client/gui/components/WidgetSprites;
