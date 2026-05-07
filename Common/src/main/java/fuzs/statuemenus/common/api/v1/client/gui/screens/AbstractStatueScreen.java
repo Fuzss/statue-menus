@@ -11,7 +11,6 @@ import fuzs.statuemenus.common.api.v1.world.inventory.StatueMenu;
 import fuzs.statuemenus.common.api.v1.world.inventory.data.StatuePose;
 import fuzs.statuemenus.common.api.v1.world.inventory.data.StatueScreenType;
 import fuzs.statuemenus.common.impl.StatueMenus;
-import fuzs.statuemenus.common.impl.client.gui.components.SheetedImageButton;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -36,19 +35,27 @@ import java.util.Optional;
 public abstract class AbstractStatueScreen extends Screen implements MenuAccess<StatueMenu>, StatueScreen {
     public static final String VANILLA_TWEAKS_HOMEPAGE = "https://vanillatweaks.net/";
     public static final String CREDITS_TRANSLATION_KEY = StatueScreenType.POSES.id().toLanguageKey("screen", "credits");
-    private static final Identifier TEXTURE_LOCATION = StatueMenus.id("textures/gui/container/statue/background.png");
+    public static final Identifier TEXTURE_LOCATION = StatueMenus.id("textures/gui/container/statue/background.png");
     public static final Identifier WIDGETS_LOCATION = StatueMenus.id("textures/gui/container/statue/widgets.png");
-    private static final WidgetSprites TAB_SPRITES = new WidgetSprites(StatueMenus.id("container/statue/tab_selected"),
+    public static final WidgetSprites TAB_SPRITES = new WidgetSprites(StatueMenus.id("container/statue/tab_selected"),
             StatueMenus.id("container/statue/tab_unselected"),
             StatueMenus.id("container/statue/tab_selected"));
-    private static final WidgetSprites TAB_TOP_SPRITES = new WidgetSprites(StatueMenus.id(
+    public static final WidgetSprites TAB_TOP_SPRITES = new WidgetSprites(StatueMenus.id(
             "container/statue/tab_top_selected"),
             StatueMenus.id("container/statue/tab_top_unselected"),
             StatueMenus.id("container/statue/tab_top_selected"));
-    private static final WidgetSprites TAB_BOTTOM_SPRITES = new WidgetSprites(StatueMenus.id(
+    public static final WidgetSprites TAB_BOTTOM_SPRITES = new WidgetSprites(StatueMenus.id(
             "container/statue/tab_bottom_selected"),
             StatueMenus.id("container/statue/tab_bottom_unselected"),
             StatueMenus.id("container/statue/tab_bottom_selected"));
+    public static final WidgetSprites CROSS_BUTTON_SPRITES = new WidgetSprites(StatueMenus.id(
+            "container/statue/cross_button"),
+            StatueMenus.id("container/statue/cross_button_disabled"),
+            StatueMenus.id("container/statue/cross_button_highlighted"));
+    public static final WidgetSprites QUESTION_MARK_SPRITES = new WidgetSprites(StatueMenus.id(
+            "container/statue/question_mark"),
+            StatueMenus.id("container/statue/question_mark_disabled"),
+            StatueMenus.id("container/statue/question_mark_highlighted"));
 
     @Nullable
     static StatueScreenType lastScreenType;
@@ -72,10 +79,6 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
         this.holder = holder;
         this.inventory = inventory;
         this.dataSyncHandler = dataSyncHandler;
-    }
-
-    public static Identifier getWidgetsLocation() {
-        return WIDGETS_LOCATION;
     }
 
     @Override
@@ -128,13 +131,11 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
     }
 
     public static AbstractButton makeCloseButton(Screen screen, int leftPos, int imageWidth, int topPos) {
-        return new SheetedImageButton(leftPos + imageWidth - 15 - 8,
+        return new ImageButton(leftPos + imageWidth - 15 - 8,
                 topPos + 8,
                 15,
                 15,
-                136,
-                0,
-                getWidgetsLocation(),
+                CROSS_BUTTON_SPRITES,
                 (Button button) -> {
                     screen.onClose();
                 });
@@ -159,13 +160,11 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
     }
 
     protected void addVanillaTweaksCreditsButton() {
-        this.addRenderableWidget(new SheetedImageButton(this.leftPos + 6,
+        this.addRenderableWidget(new ImageButton(this.leftPos + 6,
                 this.topPos + 6,
                 20,
                 20,
-                136,
-                64,
-                getWidgetsLocation(),
+                QUESTION_MARK_SPRITES,
                 (Button button) -> {
                     this.minecraft.setScreen(new ConfirmLinkScreen((boolean bl) -> {
                         if (bl) Util.getPlatform().openUri(VANILLA_TWEAKS_HOMEPAGE);
@@ -269,7 +268,7 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
                     this.dataSyncHandler.getScreenTypes());
             if (this.renderInventoryEntity()) {
                 guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
-                        getWidgetsLocation(),
+                        WIDGETS_LOCATION,
                         this.leftPos + this.inventoryEntityX,
                         this.topPos + this.inventoryEntityY,
                         this.smallInventoryEntity ? 200 : 0,

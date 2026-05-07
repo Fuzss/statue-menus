@@ -130,8 +130,7 @@ public abstract class StatueTickBoxScreen<T> extends AbstractStatueScreen {
     public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.extractBackground(guiGraphics, mouseX, mouseY, partialTick);
         // name edit box background
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
-                getWidgetsLocation(),
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_LOCATION,
                 this.leftPos + 14,
                 this.topPos + 30,
                 0,

@@ -24,8 +24,7 @@ public class TickBoxButton extends Button {
 
     @Override
     public void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
-                AbstractStatueScreen.getWidgetsLocation(),
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, AbstractStatueScreen.WIDGETS_LOCATION,
                 this.getX() + 2,
                 this.getY() + 2,
                 196,
@@ -36,8 +35,7 @@ public class TickBoxButton extends Button {
                 256,
                 ARGB.white(this.alpha));
         if (this.supplier.getAsBoolean()) {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
-                    AbstractStatueScreen.getWidgetsLocation(),
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, AbstractStatueScreen.WIDGETS_LOCATION,
                     this.getX() + 2,
                     this.getY() + 2,
                     196,

@@ -5,18 +5,30 @@ import fuzs.statuemenus.common.api.v1.world.entity.decoration.StatueEntity;
 import fuzs.statuemenus.common.api.v1.world.inventory.StatueHolder;
 import fuzs.statuemenus.common.api.v1.world.inventory.data.StatuePose;
 import fuzs.statuemenus.common.api.v1.world.inventory.data.StatueScreenType;
-import fuzs.statuemenus.common.impl.client.gui.components.SheetedImageButton;
+import fuzs.statuemenus.common.impl.StatueMenus;
 import fuzs.statuemenus.common.impl.client.gui.components.TooltipFactories;
 import fuzs.statuemenus.common.impl.world.inventory.StatuePoses;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.ImageButton;
+import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
 import java.util.Optional;
 
 public class StatuePosesScreen extends AbstractStatueScreen {
+    public static final WidgetSprites LEFT_BUTTON_SPRITES = new WidgetSprites(StatueMenus.id(
+            "container/statue/left_button"),
+            StatueMenus.id("container/statue/left_button_disabled"),
+            StatueMenus.id("container/statue/left_button_highlighted"));
+    public static final WidgetSprites RIGHT_BUTTON_SPRITES = new WidgetSprites(StatueMenus.id(
+            "container/statue/right_button"),
+            StatueMenus.id("container/statue/right_button_disabled"),
+            StatueMenus.id("container/statue/right_button_highlighted"));
+    public static final WidgetSprites BACKGROUND_FRAMED_SPRITES = new WidgetSprites(StatueMenus.id(
+            "container/statue/background_framed"), StatueMenus.id("container/statue/background_framed_highlighted"));
     private static int firstPoseIndex;
     private final AbstractWidget[] cycleButtons = new AbstractWidget[2];
     private final AbstractWidget[] poseButtons = new AbstractWidget[4];
@@ -30,35 +42,29 @@ public class StatuePosesScreen extends AbstractStatueScreen {
     @Override
     protected void init() {
         super.init();
-        this.cycleButtons[0] = this.addRenderableWidget(new SheetedImageButton(this.leftPos + 17,
+        this.cycleButtons[0] = this.addRenderableWidget(new ImageButton(this.leftPos + 17,
                 this.topPos + 153,
                 20,
                 20,
-                156,
-                64,
-                getWidgetsLocation(),
+                LEFT_BUTTON_SPRITES,
                 (Button button) -> {
                     this.toggleCycleButtons(-this.poseButtons.length);
                 }));
-        this.cycleButtons[1] = this.addRenderableWidget(new SheetedImageButton(this.leftPos + 49,
+        this.cycleButtons[1] = this.addRenderableWidget(new ImageButton(this.leftPos + 49,
                 this.topPos + 153,
                 20,
                 20,
-                176,
-                64,
-                getWidgetsLocation(),
+                RIGHT_BUTTON_SPRITES,
                 (Button button) -> {
                     this.toggleCycleButtons(this.poseButtons.length);
                 }));
         for (int i = 0; i < this.poseButtons.length; i++) {
             final int index = i;
-            this.poseButtons[i] = this.addRenderableWidget(new SheetedImageButton(this.leftPos + 83 + i % 2 * 62,
+            this.poseButtons[i] = this.addRenderableWidget(new ImageButton(this.leftPos + 83 + i % 2 * 62,
                     this.topPos + 9 + i / 2 * 88,
                     60,
                     82,
-                    76,
-                    0,
-                    getWidgetsLocation(),
+                    BACKGROUND_FRAMED_SPRITES,
                     (Button button) -> {
                         getPoseAt(index).ifPresent(this.dataSyncHandler::sendPose);
                     }));

@@ -4,12 +4,9 @@ import fuzs.statuemenus.common.api.v1.client.gui.components.FlatButton;
 import fuzs.statuemenus.common.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.common.api.v1.world.inventory.StatueHolder;
 import fuzs.statuemenus.common.api.v1.world.inventory.data.StatueScreenType;
-import fuzs.statuemenus.common.impl.client.gui.components.SheetedImageButton;
+import fuzs.statuemenus.common.impl.StatueMenus;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Renderable;
-import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
@@ -26,6 +23,10 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 public abstract class StatueWidgetsScreen extends AbstractStatueScreen {
+    public static final WidgetSprites MAGNIFYING_GLASS_BUTTON_SPRITES = new WidgetSprites(StatueMenus.id(
+            "container/statue/magnifying_glass_button"),
+            StatueMenus.id("container/statue/magnifying_glass_button_disabled"),
+            StatueMenus.id("container/statue/magnifying_glass_button_highlighted"));
     public static final Component FOCUS_COMPONENT = Component.translatable(StatueScreenType.POSITION.id()
             .toLanguageKey("screen", "focus"));
     public static final Component SAVE_COMPONENT = Component.translatable(StatueScreenType.POSITION.id()
@@ -170,13 +171,11 @@ public abstract class StatueWidgetsScreen extends AbstractStatueScreen {
             this.posX = posX;
             this.posY = posY;
             if (this.supportsToggleButton()) {
-                this.toggleButton = new SheetedImageButton(posX + 174,
+                this.toggleButton = new ImageButton(posX + 174,
                         posY + 1,
                         20,
                         20,
-                        236,
-                        64,
-                        getWidgetsLocation(),
+                        MAGNIFYING_GLASS_BUTTON_SPRITES,
                         (Button button) -> {
                             StatueWidgetsScreen.this.setActiveWidget(this);
                         });

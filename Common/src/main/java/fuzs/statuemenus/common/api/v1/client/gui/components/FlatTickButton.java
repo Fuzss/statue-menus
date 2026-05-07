@@ -22,8 +22,7 @@ public class FlatTickButton extends FlatButton {
                 width,
                 height,
                 0,
-                184,
-                AbstractStatueScreen.getWidgetsLocation(),
+                184, AbstractStatueScreen.WIDGETS_LOCATION,
                 CommonComponents.EMPTY,
                 onPress);
         this.imageTextureX = imageTextureX;

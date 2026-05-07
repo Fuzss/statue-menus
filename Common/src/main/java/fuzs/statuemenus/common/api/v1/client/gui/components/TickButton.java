@@ -17,7 +17,7 @@ public class TickButton extends FlatButton {
     protected int lastClickedTicksDelay = 30;
 
     public TickButton(int x, int y, int width, int height, Component title, Component clickedTitle, OnPress onPress) {
-        super(x, y, width, height, 0, 184, AbstractStatueScreen.getWidgetsLocation(), title, onPress);
+        super(x, y, width, height, 0, 184, AbstractStatueScreen.WIDGETS_LOCATION, title, onPress);
         this.title = title;
         this.clickedTitle = clickedTitle;
     }

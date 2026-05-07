@@ -72,8 +72,7 @@ public abstract class BoxedSliderButton extends AbstractWidget implements Unboun
         final int sliderY = (int) (this.verticalValue * (double) (this.height - SLIDER_SIZE - 2));
         if (!this.active || !this.isHoveredOrFocused()
                 || !this.horizontalValueLocked() && !this.verticalValueLocked()) {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
-                    AbstractStatueScreen.getWidgetsLocation(),
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, AbstractStatueScreen.WIDGETS_LOCATION,
                     this.getX(),
                     this.getY(),
                     0,
@@ -84,8 +83,7 @@ public abstract class BoxedSliderButton extends AbstractWidget implements Unboun
                     256,
                     ARGB.white(this.alpha));
         } else if (this.horizontalValueLocked() && this.verticalValueLocked()) {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
-                    AbstractStatueScreen.getWidgetsLocation(),
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, AbstractStatueScreen.WIDGETS_LOCATION,
                     this.getX() + sliderX,
                     this.getY() + sliderY,
                     164,
@@ -96,8 +94,7 @@ public abstract class BoxedSliderButton extends AbstractWidget implements Unboun
                     256,
                     ARGB.white(this.alpha));
         } else if (this.horizontalValueLocked()) {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
-                    AbstractStatueScreen.getWidgetsLocation(),
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, AbstractStatueScreen.WIDGETS_LOCATION,
                     this.getX() + sliderX,
                     this.getY(),
                     54,
@@ -108,8 +105,7 @@ public abstract class BoxedSliderButton extends AbstractWidget implements Unboun
                     256,
                     ARGB.white(this.alpha));
         } else {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
-                    AbstractStatueScreen.getWidgetsLocation(),
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, AbstractStatueScreen.WIDGETS_LOCATION,
                     this.getX(),
                     this.getY() + sliderY,
                     136,
@@ -120,8 +116,7 @@ public abstract class BoxedSliderButton extends AbstractWidget implements Unboun
                     256,
                     ARGB.white(this.alpha));
         }
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
-                AbstractStatueScreen.getWidgetsLocation(),
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, AbstractStatueScreen.WIDGETS_LOCATION,
                 this.getX() + 1 + sliderX,
                 this.getY() + 1 + sliderY,
                 151,

@@ -9,12 +9,10 @@ import fuzs.statuemenus.common.api.v1.world.inventory.StatueHolder;
 import fuzs.statuemenus.common.api.v1.world.inventory.data.PosePartMutator;
 import fuzs.statuemenus.common.api.v1.world.inventory.data.StatuePose;
 import fuzs.statuemenus.common.api.v1.world.inventory.data.StatueScreenType;
-import fuzs.statuemenus.common.impl.client.gui.components.SheetedImageButton;
+import fuzs.statuemenus.common.impl.StatueMenus;
 import fuzs.statuemenus.common.impl.client.gui.components.TooltipFactories;
 import net.minecraft.client.gui.ComponentPath;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.navigation.FocusNavigationEvent;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -32,6 +30,14 @@ import java.util.List;
 import java.util.function.Function;
 
 public class StatueRotationsScreen extends AbstractStatueScreen {
+    public static final WidgetSprites LOCK_CLOSED_BUTTON_SPRITES = new WidgetSprites(StatueMenus.id(
+            "container/statue/lock_closed_button"),
+            StatueMenus.id("container/statue/lock_closed_button_disabled"),
+            StatueMenus.id("container/statue/lock_closed_button_highlighted"));
+    public static final WidgetSprites LOCK_OPEN_BUTTON_SPRITES = new WidgetSprites(StatueMenus.id(
+            "container/statue/lock_open_button"),
+            StatueMenus.id("container/statue/lock_open_button_disabled"),
+            StatueMenus.id("container/statue/lock_open_button_highlighted"));
     public static final String TIP_TRANSLATION_KEY = StatueScreenType.ROTATIONS.id().toLanguageKey("screen", "tip");
     public static final String UNLIMITED_TRANSLATION_KEY = StatueScreenType.ROTATIONS.id()
             .toLanguageKey("screen", "unlimited");
@@ -70,43 +76,37 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
     @Override
     protected void init() {
         super.init();
-        this.lockButtons[0] = Util.make(this.addRenderableWidget(new SheetedImageButton(this.leftPos + 83,
+        this.lockButtons[0] = Util.make(this.addRenderableWidget(new ImageButton(this.leftPos + 83,
                 this.topPos + 10,
                 20,
                 20,
-                156,
-                124,
-                getWidgetsLocation(),
+                LOCK_OPEN_BUTTON_SPRITES,
                 (Button button) -> {
                     clampRotations = true;
                     this.toggleLockButtons();
                     this.refreshLiveButtons();
-                })), (SheetedImageButton widget) -> {
+                })), (AbstractWidget widget) -> {
             widget.setTooltip(Tooltip.create(Component.translatable(UNLIMITED_TRANSLATION_KEY)));
         });
-        this.lockButtons[1] = Util.make(this.addRenderableWidget(new SheetedImageButton(this.leftPos + 83,
+        this.lockButtons[1] = Util.make(this.addRenderableWidget(new ImageButton(this.leftPos + 83,
                 this.topPos + 10,
                 20,
                 20,
-                136,
-                124,
-                getWidgetsLocation(),
+                LOCK_CLOSED_BUTTON_SPRITES,
                 (Button button) -> {
                     clampRotations = false;
                     this.toggleLockButtons();
                     this.refreshLiveButtons();
-                })), (SheetedImageButton widget) -> {
+                })), (AbstractWidget widget) -> {
             widget.setTooltip(Tooltip.create(Component.translatable(LIMITED_TRANSLATION_KEY)));
         });
         Tooltip tooltip = this.getTipComponent();
         if (tooltip != null) {
-            this.addRenderableWidget(new SheetedImageButton(this.leftPos + 107,
+            this.addRenderableWidget(new ImageButton(this.leftPos + 107,
                     this.topPos + 10,
                     20,
                     20,
-                    136,
-                    64,
-                    getWidgetsLocation(),
+                    QUESTION_MARK_SPRITES,
                     Function.identity()::apply) {
 
                 @Nullable
@@ -127,7 +127,7 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                 20,
                 192,
                 124,
-                getWidgetsLocation(),
+                WIDGETS_LOCATION,
                 (Button button) -> {
                     StatuePose statuePose = StatuePose.randomize(this.getPosePartMutators(), clampRotations);
                     this.setCurrentPose(this.setupRandomPose(statuePose));
@@ -138,7 +138,7 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                 20,
                 240,
                 124,
-                getWidgetsLocation(),
+                WIDGETS_LOCATION,
                 (Button button) -> {
                     this.setCurrentPose(StatuePose.EMPTY);
                 })).setTooltip(Tooltip.create(Component.translatable(RESET_TRANSLATION_KEY)));
@@ -148,7 +148,7 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                 20,
                 179,
                 0,
-                getWidgetsLocation(),
+                WIDGETS_LOCATION,
                 (Button button) -> {
                     this.setCurrentPose(this.currentPose.mirror());
                 })).setTooltip(Tooltip.create(Component.translatable(MIRROR_TRANSLATION_KEY)));
@@ -159,7 +159,7 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                 20,
                 208,
                 124,
-                getWidgetsLocation(),
+                WIDGETS_LOCATION,
                 (Button button) -> {
                     clipboard = this.currentPose;
                     pasteButton[0].active = true;
@@ -170,7 +170,7 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                 20,
                 224,
                 124,
-                getWidgetsLocation(),
+                WIDGETS_LOCATION,
                 (Button button) -> {
                     if (clipboard != null) {
                         this.setCurrentPose(clipboard);

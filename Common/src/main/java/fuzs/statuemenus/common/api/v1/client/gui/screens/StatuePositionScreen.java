@@ -9,13 +9,10 @@ import fuzs.statuemenus.common.api.v1.helper.ScaleAttributeHelper;
 import fuzs.statuemenus.common.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.common.api.v1.world.inventory.StatueHolder;
 import fuzs.statuemenus.common.api.v1.world.inventory.data.StatueScreenType;
-import fuzs.statuemenus.common.impl.client.gui.components.SheetedImageButton;
+import fuzs.statuemenus.common.impl.StatueMenus;
 import fuzs.statuemenus.common.impl.world.inventory.StatuePoses;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.CommonComponents;
@@ -37,6 +34,13 @@ import java.util.function.DoubleConsumer;
 import java.util.function.DoubleSupplier;
 
 public class StatuePositionScreen extends StatueButtonsScreen {
+    public static final WidgetSprites UP_BUTTON_SPRITES = new WidgetSprites(StatueMenus.id("container/statue/up_button"),
+            StatueMenus.id("container/statue/up_button_disabled"),
+            StatueMenus.id("container/statue/up_button_highlighted"));
+    public static final WidgetSprites DOWN_BUTTON_SPRITES = new WidgetSprites(StatueMenus.id(
+            "container/statue/down_button"),
+            StatueMenus.id("container/statue/down_button_disabled"),
+            StatueMenus.id("container/statue/down_button_highlighted"));
     public static final String SCALE_TRANSLATION_KEY = StatueScreenType.POSITION.id().toLanguageKey("screen", "scale");
     public static final String ROTATION_TRANSLATION_KEY = StatueScreenType.POSITION.id()
             .toLanguageKey("screen", "rotation");
@@ -273,7 +277,7 @@ public class StatuePositionScreen extends StatueButtonsScreen {
                     20,
                     0,
                     184,
-                    getWidgetsLocation(),
+                    WIDGETS_LOCATION,
                     CommonComponents.EMPTY,
                     this.getCurrentValue()) {
                 private boolean dirty;
@@ -326,7 +330,7 @@ public class StatuePositionScreen extends StatueButtonsScreen {
                         20,
                         240,
                         124,
-                        getWidgetsLocation(),
+                        WIDGETS_LOCATION,
                         (Button button) -> {
                             this.getDefaultValue().ifPresent((double value) -> {
                                 this.setNewValue(value);
@@ -362,7 +366,7 @@ public class StatuePositionScreen extends StatueButtonsScreen {
                         20,
                         0,
                         184,
-                        getWidgetsLocation(),
+                        WIDGETS_LOCATION,
                         Component.literal(String.valueOf(getBlockPixelIncrement(increment))),
                         (Button button) -> {
                             this.setActiveIncrement(button, increment);
@@ -432,14 +436,11 @@ public class StatuePositionScreen extends StatueButtonsScreen {
             this.editBox.setTextColorUneditable(0XFFE0E0E0);
             this.editBox.setValue(BLOCK_INCREMENT_FORMAT.format(this.getPositionValue()));
             this.addRenderableWidget(this.editBox);
-            AbstractWidget incrementButton = this.addRenderableWidget(new SheetedImageButton(posX + 149,
+            AbstractWidget incrementButton = this.addRenderableWidget(new ImageButton(posX + 149,
                     posY + 1,
                     20,
                     10,
-                    196,
-                    64,
-                    20,
-                    getWidgetsLocation(),
+                    UP_BUTTON_SPRITES,
                     (Button button) -> {
                         this.setPositionValue(this.getPositionValue() + currentIncrement);
                     }));
@@ -447,14 +448,11 @@ public class StatuePositionScreen extends StatueButtonsScreen {
                     .setLines(() -> Collections.singletonList(Component.translatable(INCREMENT_TRANSLATION_KEY,
                             getPixelIncrementComponent(currentIncrement))))
                     .build(incrementButton);
-            AbstractWidget decrementButton = this.addRenderableWidget(new SheetedImageButton(posX + 149,
+            AbstractWidget decrementButton = this.addRenderableWidget(new ImageButton(posX + 149,
                     posY + 11,
                     20,
                     10,
-                    216,
-                    74,
-                    20,
-                    getWidgetsLocation(),
+                    DOWN_BUTTON_SPRITES,
                     (Button button) -> {
                         this.setPositionValue(this.getPositionValue() - currentIncrement);
                     }));

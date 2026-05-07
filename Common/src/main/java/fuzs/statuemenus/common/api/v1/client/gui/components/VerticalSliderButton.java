@@ -60,8 +60,7 @@ public abstract class VerticalSliderButton extends AbstractWidget implements Unb
 
     @Override
     public void extractWidgetRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
-                AbstractStatueScreen.getWidgetsLocation(),
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, AbstractStatueScreen.WIDGETS_LOCATION,
                 this.getX(),
                 this.getY(),
                 54,
@@ -71,8 +70,7 @@ public abstract class VerticalSliderButton extends AbstractWidget implements Unb
                 256,
                 256,
                 ARGB.white(this.alpha));
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
-                AbstractStatueScreen.getWidgetsLocation(),
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, AbstractStatueScreen.WIDGETS_LOCATION,
                 this.getX() + 1,
                 this.getY() + 1 + (int) (this.value * (double) (this.height - this.sliderSize - 2)),
                 151,
