@@ -1,7 +1,7 @@
 package fuzs.statuemenus.fabric.impl.client;
 
-import fuzs.statuemenus.impl.StatueMenus;
-import fuzs.statuemenus.impl.client.StatueMenusClient;
+import fuzs.statuemenus.common.impl.StatueMenus;
+import fuzs.statuemenus.common.impl.client.StatueMenusClient;
 import fuzs.puzzleslib.common.api.client.core.v1.ClientModConstructor;
 import net.fabricmc.api.ClientModInitializer;
 

@@ -1,0 +1,31 @@
+package fuzs.statuemenus.common.api.v1.world.inventory.data;
+
+import fuzs.statuemenus.common.impl.StatueMenus;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.Items;
+
+import java.util.List;
+
+public record StatueScreenType(Identifier id, ItemStackTemplate item, boolean requiresServer) {
+    public static final StatueScreenType EQUIPMENT = new StatueScreenType(StatueMenus.id("equipment"),
+            new ItemStackTemplate(Items.CHEST),
+            true);
+    public static final StatueScreenType ROTATIONS = new StatueScreenType(StatueMenus.id("rotations"),
+            new ItemStackTemplate(Items.COMPASS));
+    public static final StatueScreenType STYLE = new StatueScreenType(StatueMenus.id("style"),
+            new ItemStackTemplate(Items.PAINTING));
+    public static final StatueScreenType POSES = new StatueScreenType(StatueMenus.id("poses"),
+            new ItemStackTemplate(Items.SPYGLASS));
+    public static final StatueScreenType POSITION = new StatueScreenType(StatueMenus.id("position"),
+            new ItemStackTemplate(Items.GRASS_BLOCK));
+    public static final List<StatueScreenType> TYPES = List.of(ROTATIONS, POSES, STYLE, POSITION, EQUIPMENT);
+
+    public StatueScreenType(Identifier id, ItemStackTemplate item) {
+        this(id, item, false);
+    }
+
+    public String getTranslationKey() {
+        return StatueMenus.id("type").toLanguageKey("screen", this.id.toLanguageKey());
+    }
+}
