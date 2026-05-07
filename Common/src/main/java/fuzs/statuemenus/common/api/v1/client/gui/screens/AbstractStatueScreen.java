@@ -3,7 +3,7 @@ package fuzs.statuemenus.common.api.v1.client.gui.screens;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import fuzs.puzzleslib.common.api.client.key.v1.KeyMappingHelper;
-import fuzs.statuemenus.common.api.v1.client.gui.components.slider.UnboundedSliderButton;
+import fuzs.statuemenus.common.api.v1.client.gui.components.slider.ClearableSliderButton;
 import fuzs.statuemenus.common.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.common.api.v1.world.entity.decoration.StatueEntity;
 import fuzs.statuemenus.common.api.v1.world.inventory.StatueHolder;
@@ -36,7 +36,6 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
     public static final String VANILLA_TWEAKS_HOMEPAGE = "https://vanillatweaks.net/";
     public static final String CREDITS_TRANSLATION_KEY = StatueScreenType.POSES.id().toLanguageKey("screen", "credits");
     public static final Identifier TEXTURE_LOCATION = StatueMenus.id("textures/gui/container/statue/background.png");
-    public static final Identifier WIDGETS_LOCATION = StatueMenus.id("textures/gui/container/statue/widgets.png");
     public static final Identifier BACKGROUND_SPRITE = StatueMenus.id("container/statue/background");
     public static final WidgetSprites TAB_SPRITES = new WidgetSprites(StatueMenus.id("container/statue/tab_selected"),
             StatueMenus.id("container/statue/tab_unselected"),
@@ -290,10 +289,10 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
     public boolean mouseReleased(MouseButtonEvent mouseButtonEvent) {
         // make sure value is sent to server when mouse is released outside of slider widget, but when the slider value has been changed
         boolean mouseReleased = false;
-        for (GuiEventListener child : this.children()) {
-            if (child instanceof UnboundedSliderButton sliderButton) {
+        for (GuiEventListener listener : this.children()) {
+            if (listener instanceof ClearableSliderButton sliderButton) {
                 if (sliderButton.isDirty()) {
-                    mouseReleased |= child.mouseReleased(mouseButtonEvent);
+                    mouseReleased |= listener.mouseReleased(mouseButtonEvent);
                 }
             }
         }
@@ -436,7 +435,7 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
     @Override
     public void removed() {
         for (GuiEventListener listener : this.children()) {
-            if (listener instanceof UnboundedSliderButton sliderButton) {
+            if (listener instanceof ClearableSliderButton sliderButton) {
                 sliderButton.clearDirty(sliderButton.isDirty());
             }
         }

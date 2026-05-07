@@ -84,15 +84,17 @@ public class StatuePoses {
 
     public static double snapValue(double value, double snapInterval) {
         if (snapInterval > 0.0 && snapInterval < 1.0) {
-            double currentSnap = 0.0;
-            while (currentSnap < 1.0) {
-                double snapRegion = snapInterval * 0.1;
-                if (value >= currentSnap - snapRegion && value < currentSnap + snapRegion) {
-                    return currentSnap;
+            double snappedValue = 0.0;
+            while (snappedValue < 1.0) {
+                double snappingRegion = snapInterval * 0.1;
+                if (value >= snappedValue - snappingRegion && value < snappedValue + snappingRegion) {
+                    return snappedValue;
                 }
-                currentSnap += snapInterval;
+
+                snappedValue += snapInterval;
             }
         }
+
         return value;
     }
 }

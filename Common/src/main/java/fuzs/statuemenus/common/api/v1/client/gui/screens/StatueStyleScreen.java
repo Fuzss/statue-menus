@@ -1,6 +1,6 @@
 package fuzs.statuemenus.common.api.v1.client.gui.screens;
 
-import fuzs.statuemenus.common.api.v1.client.gui.components.TickTextButton;
+import fuzs.statuemenus.common.api.v1.client.gui.components.CheckboxTextButton;
 import fuzs.statuemenus.common.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.common.api.v1.world.inventory.StatueHolder;
 import fuzs.statuemenus.common.api.v1.world.inventory.data.StatueScreenType;
@@ -39,10 +39,10 @@ public abstract class StatueStyleScreen<T extends LivingEntity> extends StatueTi
 
     @Override
     protected AbstractWidget makeTickBoxWidget(LivingEntity livingEntity, int buttonStartY, int index, StatueStyleOption<? super T> option) {
-        return Util.make(new TickTextButton(this.leftPos + 96,
+        return Util.make(new CheckboxTextButton(this.leftPos + 96,
                 this.topPos + buttonStartY + index * 22,
-                6,
-                76,
+                102,
+                20,
                 (Button button) -> {
                     this.dataSyncHandler.sendStyleOption(option, !option.getOption((T) livingEntity));
                 },
@@ -51,7 +51,7 @@ public abstract class StatueStyleScreen<T extends LivingEntity> extends StatueTi
             protected boolean isTicked() {
                 return option.getOption((T) livingEntity);
             }
-        }, (TickTextButton button) -> {
+        }, (CheckboxTextButton button) -> {
             button.setTooltip(Tooltip.create(Component.translatable(option.getDescriptionKey())));
         });
     }

@@ -14,15 +14,15 @@ import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
-public final class TooltipFactories {
+public final class TooltipSuppliers {
 
-    private TooltipFactories() {
+    private TooltipSuppliers() {
         // NO-OP
     }
 
     public static void applyPosesTooltip(AbstractWidget abstractWidget, int index) {
         TooltipBuilder.create()
-                .setTooltipPositionerFactory(TooltipFactories::createPosesTooltipPositioner)
+                .setTooltipPositionerFactory(TooltipSuppliers::createPosesTooltipPositioner)
                 .setLines(() -> {
                     return StatuePosesScreen.getPoseAt(index)
                             .map(StatuePose::getTooltipLines)
@@ -49,11 +49,10 @@ public final class TooltipFactories {
     private static BiFunction<ClientTooltipPositioner, AbstractWidget, ClientTooltipPositioner> createRotationsTooltipPositioner(boolean isLeft) {
         return (ClientTooltipPositioner clientTooltipPositioner, AbstractWidget abstractWidget) -> {
             if (clientTooltipPositioner instanceof MenuTooltipPositioner) {
-                return (screenWidth, screenHeight, mouseX, mouseY, tooltipWidth, tooltipHeight) -> {
-                    if (isLeft) mouseX -= 24 + tooltipWidth;
+                return (int screenWidth, int screenHeight, int mouseX, int mouseY, int tooltipWidth, int tooltipHeight) -> {
                     return DefaultTooltipPositioner.INSTANCE.positionTooltip(screenWidth,
                             screenHeight,
-                            mouseX,
+                            isLeft ? mouseX - 24 - tooltipWidth : mouseX,
                             mouseY,
                             tooltipWidth,
                             tooltipHeight);

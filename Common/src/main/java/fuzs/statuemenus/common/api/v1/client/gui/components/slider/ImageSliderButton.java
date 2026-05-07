@@ -9,7 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
-public abstract class ImageSliderButton extends AbstractSliderButton implements UnboundedSliderButton {
+public abstract class ImageSliderButton extends AbstractSliderButton implements ClearableSliderButton {
     private boolean dirty;
 
     public ImageSliderButton(int x, int y, int width, int height, double initialValue) {
@@ -24,6 +24,22 @@ public abstract class ImageSliderButton extends AbstractSliderButton implements 
         this.value = value;
     }
 
+    @Override
+    public Identifier getSprite() {
+        return StatuePositionScreen.BUTTON_SPRITES.disabled();
+    }
+
+    @Override
+    public Identifier getHandleSprite() {
+        return StatuePositionScreen.BUTTON_SPRITES.get(true, this.active && (this.isHovered || this.canChangeValue));
+    }
+
+    @Override
+    protected void setValue(double newValue) {
+        double value = StatuePoses.snapValue(Mth.clamp(newValue, 0.0, 1.0), this.getSnapInterval());
+        super.setValue(value);
+    }
+
     protected double getSnapInterval() {
         return -1.0;
     }
@@ -34,9 +50,10 @@ public abstract class ImageSliderButton extends AbstractSliderButton implements 
     }
 
     @Override
-    public void onRelease(MouseButtonEvent mouseButtonEvent) {
-        // we use #onRelease instead of directly applying in #applyValue as the armor stand will otherwise glitch out visually since the server constantly sends outdated values
-        super.onRelease(mouseButtonEvent);
+    public void onRelease(MouseButtonEvent event) {
+        // We use #onRelease instead of directly applying in #applyValue.
+        // Otherwise, the armor stand will glitch out visually since the server constantly sends outdated values.
+        super.onRelease(event);
         this.clearDirty(this.isDirty());
     }
 
@@ -53,21 +70,5 @@ public abstract class ImageSliderButton extends AbstractSliderButton implements 
     @Override
     public void clearDirty(boolean isDirty) {
         this.dirty = false;
-    }
-
-    @Override
-    public Identifier getSprite() {
-        return StatuePositionScreen.BUTTON_SPRITES.disabled();
-    }
-
-    @Override
-    public Identifier getHandleSprite() {
-        return StatuePositionScreen.BUTTON_SPRITES.get(true, this.active && (this.isHovered || this.canChangeValue));
-    }
-
-    @Override
-    protected void setValue(double value) {
-        double newValue = StatuePoses.snapValue(Mth.clamp(value, 0.0, 1.0), this.getSnapInterval());
-        super.setValue(newValue);
     }
 }

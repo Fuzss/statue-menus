@@ -20,12 +20,14 @@ public final class ScaleAttributeHelper {
 
     public static void setScale(LivingEntity livingEntity, float scaleValue) {
         AttributeInstance attribute = livingEntity.getAttribute(Attributes.SCALE);
-        if (scaleValue == DEFAULT_SCALE) {
-            attribute.removeModifier(SCALE_BONUS_ID);
-        } else {
-            attribute.addOrReplacePermanentModifier(new AttributeModifier(SCALE_BONUS_ID,
-                    scaleValue - DEFAULT_SCALE,
-                    AttributeModifier.Operation.ADD_VALUE));
+        if (attribute != null) {
+            if (scaleValue == DEFAULT_SCALE) {
+                attribute.removeModifier(SCALE_BONUS_ID);
+            } else {
+                attribute.addOrReplacePermanentModifier(new AttributeModifier(SCALE_BONUS_ID,
+                        scaleValue - DEFAULT_SCALE,
+                        AttributeModifier.Operation.ADD_VALUE));
+            }
         }
     }
 }

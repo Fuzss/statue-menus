@@ -1,16 +1,15 @@
 package fuzs.statuemenus.common.api.v1.client.gui.screens;
 
-import fuzs.statuemenus.common.api.v1.client.gui.components.slider.BoxedSliderButton;
 import fuzs.statuemenus.common.api.v1.client.gui.components.ConfirmationImageButton;
-import fuzs.statuemenus.common.api.v1.client.gui.components.slider.LiveSliderButton;
-import fuzs.statuemenus.common.api.v1.client.gui.components.slider.VerticalSliderButton;
+import fuzs.statuemenus.common.api.v1.client.gui.components.slider.AbstractSquareSliderButton;
+import fuzs.statuemenus.common.api.v1.client.gui.components.slider.SquareSliderButton;
 import fuzs.statuemenus.common.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.common.api.v1.world.inventory.StatueHolder;
 import fuzs.statuemenus.common.api.v1.world.inventory.data.PosePartMutator;
 import fuzs.statuemenus.common.api.v1.world.inventory.data.StatuePose;
 import fuzs.statuemenus.common.api.v1.world.inventory.data.StatueScreenType;
 import fuzs.statuemenus.common.impl.StatueMenus;
-import fuzs.statuemenus.common.impl.client.gui.components.TooltipFactories;
+import fuzs.statuemenus.common.impl.client.gui.components.TooltipSuppliers;
 import net.minecraft.client.gui.ComponentPath;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -206,16 +205,14 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
         for (int i = 0; i < posePartMutators.size(); i++) {
             PosePartMutator mutator = posePartMutators.get(i);
             boolean isLeft = i % 2 == 0;
-            this.addRenderableWidget(new BoxedSliderButton(this.leftPos + 23 + i % 2 * 110,
+            this.addRenderableWidget(new SquareSliderButton(this.leftPos + 23 + i % 2 * 110,
                     this.topPos + 7 + i / 2 * 60,
-                    () -> mutator.getNormalizedRotationsAtAxis(1, this.currentPose, clampRotations),
-                    () -> mutator.getNormalizedRotationsAtAxis(0, this.currentPose, clampRotations)) {
-                private boolean dirty;
-
+                    54,
+                    54) {
                 {
                     this.active = StatueRotationsScreen.this.isPosePartMutatorActive(mutator,
                             StatueRotationsScreen.this.holder.getEntity());
-                    TooltipFactories.applyRotationsTooltip(this, isLeft, () -> {
+                    TooltipSuppliers.applyRotationsTooltip(this, isLeft, () -> {
                         List<Component> lines = new ArrayList<>();
                         lines.add(Component.translatable(mutator.getTranslationKey()));
                         lines.add(mutator.getAxisComponent(StatueRotationsScreen.this.currentPose, 0));
@@ -225,8 +222,18 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                 }
 
                 @Override
+                public void refreshValues() {
+                    this.horizontalValue = mutator.getNormalizedRotationsAtAxis(1,
+                            StatueRotationsScreen.this.currentPose,
+                            clampRotations);
+                    this.verticalValue = mutator.getNormalizedRotationsAtAxis(0,
+                            StatueRotationsScreen.this.currentPose,
+                            clampRotations);
+                }
+
+                @Override
                 protected void applyValue() {
-                    this.dirty = true;
+                    super.applyValue();
                     StatueRotationsScreen.this.currentPose = mutator.setRotationsAtAxis(1,
                             StatueRotationsScreen.this.currentPose,
                             this.horizontalValue,
@@ -238,33 +245,21 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                 }
 
                 @Override
-                public void onRelease(MouseButtonEvent mouseButtonEvent) {
-                    super.onRelease(mouseButtonEvent);
-                    this.clearDirty(this.isDirty());
-                }
-
-                @Override
-                public boolean isDirty() {
-                    return this.dirty;
-                }
-
-                @Override
                 public void clearDirty(boolean isDirty) {
-                    this.dirty = false;
+                    super.clearDirty(isDirty);
                     if (isDirty) {
                         StatueRotationsScreen.this.setCurrentPose(StatueRotationsScreen.this.currentPose);
                     }
                 }
             });
-            this.addRenderableWidget(new VerticalSliderButton(this.leftPos + 6 + i % 2 * 183,
+            this.addRenderableWidget(new SquareSliderButton(this.leftPos + 6 + i % 2 * 183,
                     this.topPos + 7 + i / 2 * 60,
-                    () -> mutator.getNormalizedRotationsAtAxis(2, this.currentPose, clampRotations)) {
-                private boolean dirty;
-
+                    15,
+                    54) {
                 {
                     this.active = StatueRotationsScreen.this.isPosePartMutatorActive(mutator,
                             StatueRotationsScreen.this.holder.getEntity());
-                    TooltipFactories.applyRotationsTooltip(this, isLeft, () -> {
+                    TooltipSuppliers.applyRotationsTooltip(this, isLeft, () -> {
                         List<Component> lines = new ArrayList<>();
                         lines.add(Component.translatable(mutator.getTranslationKey()));
                         lines.add(mutator.getAxisComponent(StatueRotationsScreen.this.currentPose, 2));
@@ -274,27 +269,33 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
 
                 @Override
                 protected void applyValue() {
-                    this.dirty = true;
+                    super.applyValue();
                     StatueRotationsScreen.this.currentPose = mutator.setRotationsAtAxis(2,
                             StatueRotationsScreen.this.currentPose,
-                            this.value,
+                            this.verticalValue,
                             clampRotations);
                 }
 
                 @Override
-                public void onRelease(MouseButtonEvent mouseButtonEvent) {
-                    super.onRelease(mouseButtonEvent);
-                    this.clearDirty(this.isDirty());
+                public void refreshValues() {
+                    this.verticalValue = mutator.getNormalizedRotationsAtAxis(2,
+                            StatueRotationsScreen.this.currentPose,
+                            clampRotations);
                 }
 
                 @Override
-                public boolean isDirty() {
-                    return this.dirty;
+                protected boolean isHorizontalValueLocked() {
+                    return true;
+                }
+
+                @Override
+                protected boolean isVerticalValueLocked() {
+                    return false;
                 }
 
                 @Override
                 public void clearDirty(boolean isDirty) {
-                    this.dirty = false;
+                    super.clearDirty(isDirty);
                     if (isDirty) {
                         StatueRotationsScreen.this.setCurrentPose(StatueRotationsScreen.this.currentPose);
                     }
@@ -344,7 +345,7 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
 
     private void refreshLiveButtons() {
         for (GuiEventListener child : this.children()) {
-            if (child instanceof LiveSliderButton button) {
+            if (child instanceof AbstractSquareSliderButton button) {
                 button.refreshValues();
             }
         }

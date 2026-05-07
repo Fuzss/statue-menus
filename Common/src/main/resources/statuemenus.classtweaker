@@ -10,3 +10,5 @@ transitive-accessible   field   net/minecraft/client/gui/components/ImageButton 
 transitive-mutable  field   net/minecraft/client/gui/components/ImageButton sprites Lnet/minecraft/client/gui/components/WidgetSprites;
 extendable  method  net/minecraft/client/gui/components/AbstractSliderButton    getSprite   ()Lnet/minecraft/resources/Identifier;
 extendable  method  net/minecraft/client/gui/components/AbstractSliderButton    getHandleSprite ()Lnet/minecraft/resources/Identifier;
+extendable  method  net/minecraft/client/gui/components/AbstractSliderButton    setValueFromMouse   (Lnet/minecraft/client/input/MouseButtonEvent;)V
+accessible  field   net/minecraft/client/gui/components/AbstractSliderButton    dragging    Z

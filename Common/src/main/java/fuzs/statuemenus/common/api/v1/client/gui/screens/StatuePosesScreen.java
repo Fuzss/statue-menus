@@ -6,7 +6,7 @@ import fuzs.statuemenus.common.api.v1.world.inventory.StatueHolder;
 import fuzs.statuemenus.common.api.v1.world.inventory.data.StatuePose;
 import fuzs.statuemenus.common.api.v1.world.inventory.data.StatueScreenType;
 import fuzs.statuemenus.common.impl.StatueMenus;
-import fuzs.statuemenus.common.impl.client.gui.components.TooltipFactories;
+import fuzs.statuemenus.common.impl.client.gui.components.TooltipSuppliers;
 import fuzs.statuemenus.common.impl.world.inventory.StatuePoses;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -68,7 +68,7 @@ public class StatuePosesScreen extends AbstractStatueScreen {
                     (Button button) -> {
                         getPoseAt(index).ifPresent(this.dataSyncHandler::sendPose);
                     }));
-            TooltipFactories.applyPosesTooltip(this.poseButtons[i], index);
+            TooltipSuppliers.applyPosesTooltip(this.poseButtons[i], index);
         }
         this.toggleCycleButtons(0);
         this.addVanillaTweaksCreditsButton();
