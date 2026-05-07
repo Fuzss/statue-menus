@@ -5,6 +5,7 @@ import fuzs.statuemenus.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.api.v1.world.inventory.StatueHolder;
 import fuzs.statuemenus.api.v1.world.inventory.StatueMenu;
 import fuzs.statuemenus.api.v1.world.inventory.data.StatueScreenType;
+import fuzs.statuemenus.impl.StatueMenus;
 import fuzs.statuemenus.impl.world.inventory.ArmorStandSlot;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
@@ -14,6 +15,7 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
@@ -23,6 +25,8 @@ import net.minecraft.world.inventory.Slot;
 import java.util.List;
 
 public class StatueEquipmentScreen extends AbstractContainerScreen<StatueMenu> implements StatueScreen {
+    private static final Identifier SLOT_DISABLED_SPRITE = StatueMenus.id("container/slot_disabled");
+
     private final Inventory inventory;
     private final DataSyncHandler dataSyncHandler;
     private int mouseX;
@@ -152,16 +156,12 @@ public class StatueEquipmentScreen extends AbstractContainerScreen<StatueMenu> i
             if (equipmentSlot != null) {
                 Slot slot = this.menu.slots.get(j++);
                 if (slot.isActive() && this.isSlotRestricted(this.menu.getEntity(), equipmentSlot)) {
-                    guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
-                            AbstractStatueScreen.getArmorStandEquipmentLocation(),
+                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED,
+                            SLOT_DISABLED_SPRITE,
                             this.leftPos + slot.x - 1,
                             this.topPos + slot.y - 1,
-                            210,
-                            0,
                             18,
-                            18,
-                            256,
-                            256);
+                            18);
                 }
             }
         }

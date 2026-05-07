@@ -9,9 +9,13 @@ import fuzs.statuemenus.api.v1.helper.ScaleAttributeHelper;
 import fuzs.statuemenus.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.api.v1.world.inventory.StatueHolder;
 import fuzs.statuemenus.api.v1.world.inventory.data.StatueScreenType;
+import fuzs.statuemenus.impl.client.gui.components.SheetedImageButton;
 import fuzs.statuemenus.impl.world.inventory.StatuePoses;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.*;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.CommonComponents;
@@ -428,7 +432,7 @@ public class StatuePositionScreen extends StatueButtonsScreen {
             this.editBox.setTextColorUneditable(0XFFE0E0E0);
             this.editBox.setValue(BLOCK_INCREMENT_FORMAT.format(this.getPositionValue()));
             this.addRenderableWidget(this.editBox);
-            AbstractWidget incrementButton = this.addRenderableWidget(new ImageButton(posX + 149,
+            AbstractWidget incrementButton = this.addRenderableWidget(new SheetedImageButton(posX + 149,
                     posY + 1,
                     20,
                     10,
@@ -445,7 +449,7 @@ public class StatuePositionScreen extends StatueButtonsScreen {
                     .setLines(() -> Collections.singletonList(Component.translatable(INCREMENT_TRANSLATION_KEY,
                             getPixelIncrementComponent(currentIncrement))))
                     .build(incrementButton);
-            AbstractWidget decrementButton = this.addRenderableWidget(new ImageButton(posX + 149,
+            AbstractWidget decrementButton = this.addRenderableWidget(new SheetedImageButton(posX + 149,
                     posY + 11,
                     20,
                     10,

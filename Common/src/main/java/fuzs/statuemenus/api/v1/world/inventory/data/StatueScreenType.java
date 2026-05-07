@@ -2,26 +2,26 @@ package fuzs.statuemenus.api.v1.world.inventory.data;
 
 import fuzs.statuemenus.impl.StatueMenus;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 
 import java.util.List;
 
-public record StatueScreenType(Identifier id, ItemStack item, boolean requiresServer) {
+public record StatueScreenType(Identifier id, ItemStackTemplate item, boolean requiresServer) {
     public static final StatueScreenType EQUIPMENT = new StatueScreenType(StatueMenus.id("equipment"),
-            new ItemStack(Items.CHEST),
+            new ItemStackTemplate(Items.CHEST),
             true);
     public static final StatueScreenType ROTATIONS = new StatueScreenType(StatueMenus.id("rotations"),
-            new ItemStack(Items.COMPASS));
+            new ItemStackTemplate(Items.COMPASS));
     public static final StatueScreenType STYLE = new StatueScreenType(StatueMenus.id("style"),
-            new ItemStack(Items.PAINTING));
+            new ItemStackTemplate(Items.PAINTING));
     public static final StatueScreenType POSES = new StatueScreenType(StatueMenus.id("poses"),
-            new ItemStack(Items.SPYGLASS));
+            new ItemStackTemplate(Items.SPYGLASS));
     public static final StatueScreenType POSITION = new StatueScreenType(StatueMenus.id("position"),
-            new ItemStack(Items.GRASS_BLOCK));
+            new ItemStackTemplate(Items.GRASS_BLOCK));
     public static final List<StatueScreenType> TYPES = List.of(ROTATIONS, POSES, STYLE, POSITION, EQUIPMENT);
 
-    public StatueScreenType(Identifier id, ItemStack item) {
+    public StatueScreenType(Identifier id, ItemStackTemplate item) {
         this(id, item, false);
     }
 

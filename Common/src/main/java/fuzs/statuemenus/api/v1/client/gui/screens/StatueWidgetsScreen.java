@@ -4,8 +4,12 @@ import fuzs.statuemenus.api.v1.client.gui.components.FlatButton;
 import fuzs.statuemenus.api.v1.network.client.data.DataSyncHandler;
 import fuzs.statuemenus.api.v1.world.inventory.StatueHolder;
 import fuzs.statuemenus.api.v1.world.inventory.data.StatueScreenType;
+import fuzs.statuemenus.impl.client.gui.components.SheetedImageButton;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.*;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
@@ -166,7 +170,7 @@ public abstract class StatueWidgetsScreen extends AbstractStatueScreen {
             this.posX = posX;
             this.posY = posY;
             if (this.supportsToggleButton()) {
-                this.toggleButton = new ImageButton(posX + 174,
+                this.toggleButton = new SheetedImageButton(posX + 174,
                         posY + 1,
                         20,
                         20,

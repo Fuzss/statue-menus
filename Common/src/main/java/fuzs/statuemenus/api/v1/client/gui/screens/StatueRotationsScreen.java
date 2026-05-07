@@ -9,11 +9,11 @@ import fuzs.statuemenus.api.v1.world.inventory.StatueHolder;
 import fuzs.statuemenus.api.v1.world.inventory.data.PosePartMutator;
 import fuzs.statuemenus.api.v1.world.inventory.data.StatuePose;
 import fuzs.statuemenus.api.v1.world.inventory.data.StatueScreenType;
+import fuzs.statuemenus.impl.client.gui.components.SheetedImageButton;
 import fuzs.statuemenus.impl.client.gui.components.TooltipFactories;
 import net.minecraft.client.gui.ComponentPath;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.navigation.FocusNavigationEvent;
@@ -71,7 +71,7 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
     @Override
     protected void init() {
         super.init();
-        this.lockButtons[0] = Util.make(this.addRenderableWidget(new ImageButton(this.leftPos + 83,
+        this.lockButtons[0] = Util.make(this.addRenderableWidget(new SheetedImageButton(this.leftPos + 83,
                 this.topPos + 10,
                 20,
                 20,
@@ -86,10 +86,10 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                     this.toggleLockButtons();
                     this.refreshLiveButtons();
                 },
-                CommonComponents.EMPTY)), (ImageButton widget) -> {
+                CommonComponents.EMPTY)), (SheetedImageButton widget) -> {
             widget.setTooltip(Tooltip.create(Component.translatable(UNLIMITED_TRANSLATION_KEY)));
         });
-        this.lockButtons[1] = Util.make(this.addRenderableWidget(new ImageButton(this.leftPos + 83,
+        this.lockButtons[1] = Util.make(this.addRenderableWidget(new SheetedImageButton(this.leftPos + 83,
                 this.topPos + 10,
                 20,
                 20,
@@ -104,12 +104,12 @@ public class StatueRotationsScreen extends AbstractStatueScreen {
                     this.toggleLockButtons();
                     this.refreshLiveButtons();
                 },
-                CommonComponents.EMPTY)), (ImageButton widget) -> {
+                CommonComponents.EMPTY)), (SheetedImageButton widget) -> {
             widget.setTooltip(Tooltip.create(Component.translatable(LIMITED_TRANSLATION_KEY)));
         });
         Tooltip tooltip = this.getTipComponent();
         if (tooltip != null) {
-            this.addRenderableWidget(new ImageButton(this.leftPos + 107,
+            this.addRenderableWidget(new SheetedImageButton(this.leftPos + 107,
                     this.topPos + 10,
                     20,
                     20,

@@ -10,6 +10,7 @@ import fuzs.statuemenus.api.v1.world.inventory.StatueMenu;
 import fuzs.statuemenus.api.v1.world.inventory.data.StatuePose;
 import fuzs.statuemenus.api.v1.world.inventory.data.StatueScreenType;
 import fuzs.statuemenus.impl.StatueMenus;
+import fuzs.statuemenus.impl.client.gui.components.SheetedImageButton;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -41,6 +42,17 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
             "textures/gui/container/statue/widgets.png");
     private static final Identifier ARMOR_STAND_EQUIPMENT_LOCATION = StatueMenus.id(
             "textures/gui/container/statue/equipment.png");
+    private static final WidgetSprites TAB_SPRITES = new WidgetSprites(StatueMenus.id("container/statue/tab_selected"),
+            StatueMenus.id("container/statue/tab_unselected"),
+            StatueMenus.id("container/statue/tab_selected"));
+    private static final WidgetSprites TAB_TOP_SPRITES = new WidgetSprites(StatueMenus.id(
+            "container/statue/tab_top_selected"),
+            StatueMenus.id("container/statue/tab_top_unselected"),
+            StatueMenus.id("container/statue/tab_top_selected"));
+    private static final WidgetSprites TAB_BOTTOM_SPRITES = new WidgetSprites(StatueMenus.id(
+            "container/statue/tab_bottom_selected"),
+            StatueMenus.id("container/statue/tab_bottom_unselected"),
+            StatueMenus.id("container/statue/tab_bottom_selected"));
 
     @Nullable
     static StatueScreenType lastScreenType;
@@ -128,7 +140,7 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
     }
 
     public static AbstractButton makeCloseButton(Screen screen, int leftPos, int imageWidth, int topPos) {
-        return new ImageButton(leftPos + imageWidth - 15 - 8,
+        return new SheetedImageButton(leftPos + imageWidth - 15 - 8,
                 topPos + 8,
                 15,
                 15,
@@ -159,7 +171,7 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
     }
 
     protected void addVanillaTweaksCreditsButton() {
-        this.addRenderableWidget(new ImageButton(this.leftPos + 6,
+        this.addRenderableWidget(new SheetedImageButton(this.leftPos + 6,
                 this.topPos + 6,
                 20,
                 20,
@@ -391,17 +403,18 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
             StatueScreenType tabType = tabs.get(i);
             int tabX = leftPos - 32;
             int tabY = topPos + tabsStartY + 27 * i;
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
-                    getArmorStandBackgroundLocation(),
-                    tabX,
-                    tabY,
-                    tabY <= topPos ? 36 : tabY >= topPos + imageHeight - 36 ? 72 : 0,
-                    188 + (tabType == screen.getScreenType() ? 0 : 26),
-                    36,
-                    26,
-                    256,
-                    256);
-            guiGraphics.fakeItem(tabType.item(), tabX + 10, tabY + 5);
+            WidgetSprites sprites;
+            if (tabY <= topPos) {
+                sprites = TAB_TOP_SPRITES;
+            } else if (tabY >= topPos + imageHeight - 36) {
+                sprites = TAB_BOTTOM_SPRITES;
+            } else {
+                sprites = TAB_SPRITES;
+            }
+
+            Identifier sprite = sprites.get(tabType == screen.getScreenType(), false);
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, tabX, tabY, 36, 26);
+            guiGraphics.fakeItem(tabType.item().create(), tabX + 10, tabY + 5);
         }
     }
 
