@@ -4,7 +4,7 @@
 
 | Branch | Status | Changelog | Maven |
 | --- | --- | --- | --- |
-| [26.1.x](https://github.com/Fuzss/statue-menus/tree/26.1.x) | ✅&nbsp;Primary | [CHANGELOG.md](https://github.com/Fuzss/statue-menus/blob/26.1.x/CHANGELOG.md) | [`fuzs.statuemenus:statuemenus-common:21.11.0`](https://github.com/Fuzss/modresources/tree/main/maven/fuzs/statuemenus/statuemenus-common/21.11.0)<br />[`fuzs.statuemenus:statuemenus-fabric:21.11.0`](https://github.com/Fuzss/modresources/tree/main/maven/fuzs/statuemenus/statuemenus-fabric/21.11.0)<br />[`fuzs.statuemenus:statuemenus-neoforge:21.11.0`](https://github.com/Fuzss/modresources/tree/main/maven/fuzs/statuemenus/statuemenus-neoforge/21.11.0) |
+| [26.1.x](https://github.com/Fuzss/statue-menus/tree/26.1.x) | ✅&nbsp;Primary | [CHANGELOG.md](https://github.com/Fuzss/statue-menus/blob/26.1.x/CHANGELOG.md) | [`fuzs.statuemenus:statuemenus-common:26.1.0`](https://github.com/Fuzss/modresources/tree/main/maven/fuzs/statuemenus/statuemenus-common/26.1.0)<br />[`fuzs.statuemenus:statuemenus-fabric:26.1.0`](https://github.com/Fuzss/modresources/tree/main/maven/fuzs/statuemenus/statuemenus-fabric/26.1.0)<br />[`fuzs.statuemenus:statuemenus-neoforge:26.1.0`](https://github.com/Fuzss/modresources/tree/main/maven/fuzs/statuemenus/statuemenus-neoforge/26.1.0) |
 
 ### Minecraft 1.21.x
 
