@@ -16,7 +16,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypeIds;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -60,7 +60,7 @@ public class StatueMenus implements ModConstructor {
 
     private static PlayerInteractEvents.UseEntity onUseEntityAt(Holder<MenuType<?>> menuType) {
         return (Player player, Level level, InteractionHand interactionHand, Entity entity, Vec3 hitVector) -> {
-            if (entity.getType() == EntityType.ARMOR_STAND && entity instanceof ArmorStand armorStand) {
+            if (entity.is(EntityTypeIds.ARMOR_STAND) && entity instanceof ArmorStand armorStand) {
                 if (player.isShiftKeyDown() && player.getItemInHand(interactionHand).is(Items.DEBUG_STICK)) {
                     InteractionResult interactionResult = ArmorStandInteractHelper.openStatueMenu(player,
                             level,

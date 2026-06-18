@@ -166,9 +166,12 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
                 20,
                 QUESTION_MARK_SPRITES,
                 (Button button) -> {
-                    this.minecraft.setScreen(new ConfirmLinkScreen((boolean bl) -> {
-                        if (bl) Util.getPlatform().openUri(VANILLA_TWEAKS_HOMEPAGE);
-                        this.minecraft.setScreen(this);
+                    this.minecraft.gui.setScreen(new ConfirmLinkScreen((boolean shouldOpen) -> {
+                        if (shouldOpen) {
+                            Util.getPlatform().openUri(VANILLA_TWEAKS_HOMEPAGE);
+                        }
+
+                        this.minecraft.gui.setScreen(this);
                     }, VANILLA_TWEAKS_HOMEPAGE, true));
                 })).setTooltip(Tooltip.create(Component.translatable(CREDITS_TRANSLATION_KEY)));
     }
@@ -364,7 +367,7 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
                 screen.minecraft.getSoundManager().play(sound);
             }
 
-            screen.minecraft.setScreen(screen.createScreenType(screenType));
+            screen.minecraft.gui.setScreen(screen.createScreenType(screenType));
             return true;
         } else {
             return false;

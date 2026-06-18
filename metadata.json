@@ -1,10 +1,10 @@
 {
-    "minecraft": "26.1.2",
+    "minecraft": "26.2",
     "mod": {
         "id": "statuemenus",
         "group": "fuzs.statuemenus",
         "name": "Statue Menus",
-        "version": "26.1.0",
+        "version": "26.2.0",
         "authors": [
             "Fuzs"
         ],
