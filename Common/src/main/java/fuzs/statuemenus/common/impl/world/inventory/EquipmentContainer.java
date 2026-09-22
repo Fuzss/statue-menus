@@ -1,12 +1,12 @@
 package fuzs.statuemenus.common.impl.world.inventory;
 
-import fuzs.puzzleslib.common.api.container.v1.SimpleContainerImpl;
+import fuzs.puzzleslib.common.api.container.v1.ContainerTemplate;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public class EquipmentContainer implements SimpleContainerImpl {
+public class EquipmentContainer implements ContainerTemplate {
     private static final EquipmentSlot[] EQUIPMENT_SLOTS = EquipmentSlot.values();
 
     private final LivingEntity livingEntity;

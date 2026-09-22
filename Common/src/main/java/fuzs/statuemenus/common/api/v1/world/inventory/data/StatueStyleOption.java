@@ -43,7 +43,7 @@ public abstract class StatueStyleOption<T extends LivingEntity> implements Strin
             Entity::isNoGravity);
     public static final StatueStyleOption<LivingEntity> INVULNERABLE = create(StatueMenus.id("invulnerable"),
             "Invulnerable",
-            Entity::setInvulnerable,
+            Entity::setPermanentlyInvulnerable,
             Entity::isInvulnerable);
     public static final StatueStyleOption<ArmorStand> SEALED = new StatueStyleOption<>(StatueMenus.id("sealed")) {
         @Override

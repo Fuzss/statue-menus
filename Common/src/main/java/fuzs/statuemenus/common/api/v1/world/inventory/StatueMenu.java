@@ -152,7 +152,7 @@ public class StatueMenu extends AbstractContainerMenu implements StatueHolder {
         public LivingEntity getEntity(Level level) {
             if (level.getEntity(this.entityId) instanceof LivingEntity livingEntity) {
                 // vanilla doesn't sync these automatically, we need them for the menu
-                livingEntity.setInvulnerable(this.isInvulnerable);
+                livingEntity.setPermanentlyInvulnerable(this.isInvulnerable);
                 if (livingEntity instanceof ArmorStand armorStand) {
                     armorStand.disabledSlots = this.disabledSlots;
                 }

@@ -24,11 +24,11 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Util;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.jspecify.annotations.Nullable;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -166,13 +166,7 @@ public abstract class AbstractStatueScreen extends Screen implements MenuAccess<
                 20,
                 QUESTION_MARK_SPRITES,
                 (Button button) -> {
-                    this.minecraft.gui.setScreen(new ConfirmLinkScreen((boolean shouldOpen) -> {
-                        if (shouldOpen) {
-                            Util.getPlatform().openUri(VANILLA_TWEAKS_HOMEPAGE);
-                        }
-
-                        this.minecraft.gui.setScreen(this);
-                    }, VANILLA_TWEAKS_HOMEPAGE, true));
+                    ConfirmLinkScreen.confirmLinkNow(this, URI.create(VANILLA_TWEAKS_HOMEPAGE));
                 })).setTooltip(Tooltip.create(Component.translatable(CREDITS_TRANSLATION_KEY)));
     }
 
